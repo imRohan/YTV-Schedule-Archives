@@ -5,39 +5,61 @@ require 'open-uri'
 require 'csv'
 require 'pry'
 
-first_schedule_date = Date.parse('September 1, 1988')
-today = Date.today
-errors = []
+class CsvGenerator
+  attr_accessor :start_date, :end_date, :errors, :csv_rows
 
-(first_schedule_date..today).each do |date|
-  month = date.strftime('%B')
-  day = date.strftime('%e').strip
-  year = date.strftime('%Y')
-  file_name = "#{month}_#{day}_#{year}.csv"
-  Dir.mkdir(year) unless File.exist?(year)
+  def initialize(start_date: 'September 1, 1988', end_date: Date.today)
+    @start_date = Date.parse(start_date)
+    @end_date = end_date
+    @errors = []
+    @csv_rows = []
+  end
 
-  begin
+  def generate
+    (start_date..end_date).each do |date|
+      schedule = get_schedule_for_date(date)
+      csv_rows = parse_schedule(schedule)
+      save_csv(date: date, rows: csv_rows)
+      print '.'
+    rescue RuntimeError => e
+      print 'e'
+      errors << "Error for #{file_name}: #{e}"
+    end
+
+    puts errors
+  end
+
+  def get_schedule_for_date(date)
+    month = date.strftime('%B')
+    day = date.strftime('%e').strip
+    year = date.strftime('%Y')
     url = "https://ytv-schedule-archives.fandom.com/wiki/#{month}_#{day},_#{year}"
 
     doc = Nokogiri::HTML(URI.open(url))
-    csv_rows = []
-
     schedule_table = doc.css('table')[1]
-    rows = schedule_table.css('tr')
+    schedule_table.css('tr')
+  end
 
-    column_names = rows.shift.css('th').map(&:text).map(&:strip)
+  def parse_schedule(schedule)
+    csv_rows = []
+    column_names = schedule.shift.css('th').map(&:text).map(&:strip)
     csv_rows << column_names
 
-    rows.css('tr').each do |row|
+    schedule.css('tr').each do |row|
       time = row.css('th').text.strip
       data = row.css('td').map(&:text).map(&:strip)
       csv_rows << [time, *data]
     end
 
-    File.write("./#{year}/#{date}.csv", csv_rows.map(&:to_csv).join)
-    print '.'
-  rescue => e
-    print 'e'
-    errors << "Error for #{file_name}: #{e}"
+    csv_rows
+  end
+
+  def save_csv(date:, rows:)
+    year = date.strftime('%Y')
+    Dir.mkdir(year) unless File.exist?(year)
+    File.write("./#{year}/#{date}.csv", rows.map(&:to_csv).join)
   end
 end
+
+generator = CsvGenerator.new
+generator.generate
