@@ -16,14 +16,15 @@ class CsvGenerator
   end
 
   def generate
+    puts "Fetching schedules between #{start_date}-#{end_date}"
     (start_date..end_date).each do |date|
       schedule = get_schedule_for_date(date)
       csv_rows = parse_schedule(schedule)
       save_csv(date: date, rows: csv_rows)
       print '.'
-    rescue RuntimeError => e
+    rescue => e
       print 'e'
-      errors << "Error for #{file_name}: #{e}"
+      errors << "Error for #{date}: #{e}"
     end
 
     puts errors
@@ -61,5 +62,5 @@ class CsvGenerator
   end
 end
 
-generator = CsvGenerator.new
+generator = CsvGenerator.new(start_date: 'July 1, 2013')
 generator.generate
