@@ -11,16 +11,6 @@ This repository serves as a data resource for media researchers, television hist
 
 YTV historically broadcast multiple feeds across Canada (primarily Eastern and Pacific). Unless explicitly flagged in a separate regional sub-folder, all times in the primary datasets are normalized to Eastern Time (ET).
 
-## Repository Structure
-```
-ytv-schedules/
-├── README.md
-├── LICENSE
-├── yyyy/
-│   ├── yyyy-mm-dd.csv       # Unmodified daily/weekly scrape files
-└── scripts/                 # Scrapers and formatting utilities
-```
-
 ## License
 
 This data collection is made available for educational and historical research purposes. The compiled datasets (.csv files) are distributed under the Creative Commons Attribution 4.0 International (CC BY 4.0) license. Individual program titles, logotypes, and intellectual property remain the property of Corus Entertainment and their respective production houses.
