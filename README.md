@@ -3,7 +3,7 @@
 
 # YTV Television Scheduling Archive
 
-A historical and ongoing archive of television broadcasting schedules for the Canadian cable channel **YTV**, stored in clean, machine-readable `.csv` formats. 
+A historical and ongoing archive of television broadcasting schedules for the Canadian cable channel **YTV**, stored in clean, machine-readable `.csv` formats. Data was scraped from the [YTV Wiki](https://ytv-schedule-archives.fandom.com/wiki/YTV_Schedule_Archives_Wiki) and will be updated periodically.
 
 This repository serves as a data resource for media researchers, television historians, and nostalgia enthusiasts tracking broadcasting trends, programming blocks (like *The Zone*, *The Fresh Prince of Bel-Air*, or *SpongeBob SquarePants*), and regional scheduling shifts over the years.
 
