@@ -8,9 +8,9 @@ require 'pry'
 class CsvGenerator
   attr_accessor :start_date, :end_date, :errors, :csv_rows
 
-  def initialize(start_date: 'September 1, 1988', end_date: Date.today)
+  def initialize(start_date: 'September 1, 1988', end_date: Date.today.to_s)
     @start_date = Date.parse(start_date)
-    @end_date = end_date
+    @end_date = Date.parse(end_date)
     @errors = []
     @csv_rows = []
   end
@@ -62,5 +62,5 @@ class CsvGenerator
   end
 end
 
-generator = CsvGenerator.new(start_date: 'July 1, 2013')
+generator = CsvGenerator.new
 generator.generate
