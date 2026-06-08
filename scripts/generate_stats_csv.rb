@@ -30,7 +30,7 @@ class StatsGenerator
     file_path = "./#{year}/#{date}.csv"
     if File.exist?(file_path)
       CSV.foreach(file_path, headers: true) do |row|
-        track_show(row['Show'])
+        track_show(show: row['Show'], episode: row['Episode'], date: date)
       end
       print '.'
     else
@@ -39,17 +39,21 @@ class StatsGenerator
     end
   end
 
-  def track_show(show)
+  def track_show(show:, episode:, date:)
     return if show.nil?
     return if show.empty?
 
-    shows[show] = shows.fetch(show, 0) + 1
+    record = { date: date.to_s, episode: episode }
+    shows[show] = shows.fetch(show, []) << record
   end
 
   def save_stats
-    stats_rows = [['Show Name', 'Play Count']]
-    shows_ranked = shows.sort_by { |_, value| - value }
-    stats_rows.concat(shows_ranked)
+    stats_rows = [['Show Name', 'Date Aired', 'Episode Name']]
+    shows.each do |show, episodes|
+      episodes.each do |episode|
+        stats_rows << [show, episode[:date], episode[:episode]]
+      end
+    end
     File.write('stats.csv', stats_rows.map(&:to_csv).join)
   end
 end
