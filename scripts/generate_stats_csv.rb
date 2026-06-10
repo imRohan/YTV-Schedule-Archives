@@ -1,5 +1,6 @@
 #! /usr/bin/env ruby
 
+require 'active_support/core_ext/object/blank'
 require 'nokogiri'
 require 'open-uri'
 require 'csv'
@@ -40,8 +41,8 @@ class StatsGenerator
   end
 
   def track_show(show:, episode:, date:)
-    return if show.nil?
-    return if show.empty?
+    return if show.blank?
+    return if episode.blank?
 
     record = { date: date.to_s, episode: episode }
     shows[show] = shows.fetch(show, []) << record
