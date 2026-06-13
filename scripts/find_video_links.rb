@@ -30,6 +30,7 @@ class LinkFinder
     puts "Reading schedules between #{start_date} & #{end_date}"
     (start_date..end_date).each do |date|
       if quota_reached
+        puts ''
         puts "Quota reached: #{date}"
         break
       else
@@ -44,7 +45,7 @@ class LinkFinder
     if File.exist?(file_path)
       update_existing_schedule(file_path: file_path)
     else
-      print 'e'
+      print '❎'
     end
   end
 
@@ -67,7 +68,7 @@ class LinkFinder
 
   def find_youtube_id(existing_id:, show:, episode:)
     if existing_id.present?
-      print '*'
+      print '✅'
       existing_id
     else
       query_youtube!(show: show, episode: episode)
@@ -86,10 +87,10 @@ class LinkFinder
     end
 
     if video.present?
-      print '^'
+      print '🆕'
       video.id.video_id
     else
-      print '?'
+      print '🐛'
       nil
     end
   end
