@@ -1,49 +1,49 @@
-Time,Show,Episode,Image
-12:00am,Futurama,Future Stock,""
-12:30am,Pinky and the Brain,"My Feldmans, My Friends",""
-1:00am,Smallville,Drone,""
-1:30am
-2:00am,Crush,""
-2:30am
-3:00am,Paid Programming,""
-3:30am
-4:00am,Storm Hawks,Radarr Love,""
-4:30am,Team Galaxy,Planet Goodtimes,""
-5:00am,Grossology,Ask the Dust Mites,""
-5:30am,Captain Flamingo,Knot in My Backyard / Real to Me,""
-6:00am,Being Ian,White Rock,""
-6:30am,Will & Dewitt,"Will and Grass / Stain, Stain, Go Away",""
-7:00am,Winx Club,"",""
-7:30am,Viva Pinata,Wraisins of Wrath / Pinata Island Idol,""
-8:00am,Ruby Gloom,Science Fair or Foul,""
-8:30am,"Deja Vu, Again",""
-9:00am,The Fairly OddParents,Cosmo Con / Wanda's Day Off,""
-9:30am,You Doo / Just Desserts,""
-10:00am,SpongeBob SquarePants,Dying for Pie / Imitation Krabs,""
-10:30am,Fear of a Krabby Patty / Shell of a Man,""
-11:00am,The Mighty B!,An I See Bee / Woodward and Beesting,""
-11:30am,Doppelfinger / Little Womyn,""
-12:00pm,iCarly,iRule the Day,""
-12:30pm,iPromise Not to Tell,""
-1:00pm,Mystery Hunters,Secrets,""
-1:30pm,Unbelievable Places,""
-2:00pm,The Adrenaline Project,X-Sports,""
-2:30pm,Twins,""
-3:00pm,Prank Patrol,Secret Admirer,""
-3:30pm,Bogus Celebrity,""
-4:00pm,The Sandlot 2 (2005),""
-4:30pm
-5:00pm
-5:30pm
-6:00pm,Roll Bounce (2005),""
-6:30pm
-7:00pm
-7:30pm
-8:00pm
-8:30pm,Prank Patrol,Bad Hair Day,""
-9:00pm,The Next Star,The Single,""
-9:30pm
-10:00pm,Falcon Beach,Family Portrait,""
-10:30pm
-11:00pm,Mystery Hunters,"Mexican Mummies, Secret Animal Talk",""
-11:30pm,Ghost Trackers,The Ghost of Colborne Lodge,""
+Time,Show,Episode,Youtube Video ID
+12:00am,Futurama,Future Stock,
+12:30am,Pinky and the Brain,"My Feldmans, My Friends",
+1:00am,Smallville,Drone,
+1:30am,,,
+2:00am,Crush,,
+2:30am,,,
+3:00am,Paid Programming,,
+3:30am,,,
+4:00am,Storm Hawks,Radarr Love,
+4:30am,Team Galaxy,Planet Goodtimes,
+5:00am,Grossology,Ask the Dust Mites,
+5:30am,Captain Flamingo,Knot in My Backyard / Real to Me,
+6:00am,Being Ian,White Rock,
+6:30am,Will & Dewitt,"Will and Grass / Stain, Stain, Go Away",
+7:00am,Winx Club,,
+7:30am,Viva Pinata,Wraisins of Wrath / Pinata Island Idol,
+8:00am,Ruby Gloom,Science Fair or Foul,
+8:30am,"Deja Vu, Again",,
+9:00am,The Fairly OddParents,Cosmo Con / Wanda's Day Off,
+9:30am,You Doo / Just Desserts,,
+10:00am,SpongeBob SquarePants,Dying for Pie / Imitation Krabs,
+10:30am,Fear of a Krabby Patty / Shell of a Man,,
+11:00am,The Mighty B!,An I See Bee / Woodward and Beesting,
+11:30am,Doppelfinger / Little Womyn,,
+12:00pm,iCarly,iRule the Day,
+12:30pm,iPromise Not to Tell,,
+1:00pm,Mystery Hunters,Secrets,
+1:30pm,Unbelievable Places,,
+2:00pm,The Adrenaline Project,X-Sports,
+2:30pm,Twins,,
+3:00pm,Prank Patrol,Secret Admirer,
+3:30pm,Bogus Celebrity,,
+4:00pm,The Sandlot 2 (2005),,
+4:30pm,,,
+5:00pm,,,
+5:30pm,,,
+6:00pm,Roll Bounce (2005),,
+6:30pm,,,
+7:00pm,,,
+7:30pm,,,
+8:00pm,,,
+8:30pm,Prank Patrol,Bad Hair Day,
+9:00pm,The Next Star,The Single,
+9:30pm,,,
+10:00pm,Falcon Beach,Family Portrait,
+10:30pm,,,
+11:00pm,Mystery Hunters,"Mexican Mummies, Secret Animal Talk",
+11:30pm,Ghost Trackers,The Ghost of Colborne Lodge,

@@ -18,10 +18,16 @@ class CsvGenerator
   def generate
     puts "Fetching schedules between #{start_date}-#{end_date}"
     (start_date..end_date).each do |date|
-      schedule = get_schedule_for_date(date)
-      csv_rows = parse_schedule(schedule)
-      save_csv(date: date, rows: csv_rows)
-      print '.'
+      year = date.strftime('%Y')
+      file_path = "./#{year}/#{date}.csv"
+      if File.exist?(file_path)
+        print 's'
+      else
+        schedule = get_schedule_for_date(date)
+        csv_rows = parse_schedule(schedule)
+        save_csv(date: date, rows: csv_rows)
+        print '.'
+      end
     rescue => e
       print 'e'
       errors << "Error for #{date}: #{e}"
