@@ -17,6 +17,10 @@ body {
   background: var(--body-background);
 }
 
+main {
+  overflow: hidden;
+}
+
 nav {
   position: absolute;
   top: 1rem;
@@ -42,6 +46,8 @@ nav > ul> li > a {
   text-decoration: none;
   font-size: var(--nav-font-size);
   color: var(--nav-color);
+  will-change: text-shadow;
+  animation: rgbText 10s steps(9) 0s infinite alternate;
 }
 
 #logo {
@@ -66,14 +72,18 @@ nav > ul> li > a {
 }
 
 #schedule > h1 {
-  font-family: 'CRT';
+  font-size: 4rem;
+  font-family: "Jersey 10", sans-serif;
   text-align: center;
+  will-change: text-shadow;
+  animation: rgbText 10s steps(9) 0s infinite alternate;
 }
 
 table {
   margin-top: 3em;
-  font-family: 'CRT';
+  font-family: "Jersey 10", sans-serif;
   text-align: center;
+  font-size: 1.5rem;
 }
 
 td {
