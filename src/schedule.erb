@@ -1,0 +1,30 @@
+---
+layout: default
+metadata: site.data.schedule_metadata
+---
+<schedule id="schedule">
+  <h1><%= metadata.date %></h1>
+  <table>
+    <thead>
+      <th>Time</th>
+      <th>Show</th>
+      <th>Episode</th>
+      <th>Youtube Video ID</th>
+    </thead>
+    <tbody>
+      <% site.data.schedule.each do |row| %>
+        <tr>
+          <td><%= row.Time %></td>
+          <td><%= row.Show %></td>
+          <td><%= row.Episode %></td>
+          <td>
+            <a href="https://www.youtube.com/watch?v=<%= row["Youtube Video ID"] %>"
+               target="_blank">
+              <%= row["Youtube Video ID"] %>
+            </a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</schedule>
