@@ -1,0 +1,6 @@
+---
+layout: default
+---
+<%= render Video::PlayerComponent.new(schedule: site.data.schedule,
+                                      metadata: site.data.schedule_metadata) %>
+<%= render "logo" %>

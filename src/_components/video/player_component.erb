@@ -1,0 +1,21 @@
+<scanlines id="scanlines"></scanlines>
+<video-component id="video__container"></video-component>
+<context-component id="context__container">
+  CH 25
+</context-component>
+
+<now-playing-component id="now-playing__container">
+  <now-playing-super id="now-playing__super">
+    Original Air Date: <%= @schedule_date %> at 
+    <time-component id="time__container"/>
+  </now-playing-super>
+  <now-playing-title id="now-playing__title"></now-playing-title>
+  <now-playing-subtitle id="now-playing__subtitle"></now-playing-subtitle>
+</now-playing-component>
+
+<script defer>
+  document.addEventListener("DOMContentLoaded", function(){
+    window.player = new PlayerComponent(<%= raw(@schedule_hash.to_json) %>)
+    player.loadPlayer()
+  })
+</script>

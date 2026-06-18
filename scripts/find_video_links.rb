@@ -43,18 +43,19 @@ class LinkFinder
     year = date.strftime('%Y')
     file_path = "./#{year}/#{date}.csv"
     if File.exist?(file_path)
-      update_existing_schedule(file_path: file_path)
+      update_existing_schedule(file_path: file_path, date: date)
     else
       print '❎'
     end
   end
 
-  def update_existing_schedule(file_path:)
+  def update_existing_schedule(file_path:, date:)
     schedule_rows = [['Time', 'Show', 'Episode', 'Youtube Video ID']]
     CSV.foreach(file_path, headers: true) do |row|
       schedule_rows << parse_and_update_show(row: row)
     end
     save_schedule(rows: schedule_rows, file_path: file_path)
+    update_frontend_schedule(rows: schedule_rows, date: date)
   end
 
   def parse_and_update_show(row:)
@@ -105,6 +106,25 @@ class LinkFinder
 
   def save_schedule(rows:, file_path:)
     File.write(file_path, rows.map(&:to_csv).join)
+  end
+
+  def update_frontend_schedule(rows:, date:)
+    save_frontend_schedule(rows: rows)
+    save_frontend_schedule_metadata(date: date)
+  end
+
+  def save_frontend_schedule(rows:)
+    file_path = './src/_data/schedule.csv'
+    File.write(file_path, rows.map(&:to_csv).join)
+  end
+
+  def save_frontend_schedule_metadata(date:)
+    metadata = {
+      date: date.to_s,
+      updated_at: Time.now.strftime('%d/%m/%Y %H:%M')
+    }.transform_keys(&:to_s)
+    file_path = './src/_data/schedule_metadata.yml'
+    File.write(file_path, YAML.dump(metadata))
   end
 end
 

@@ -1,0 +1,90 @@
+@import url('animations.css');
+
+:root {
+  --body-background: #FFFFFF;
+  --nav-background: #FFFFFF;
+  --nav-font-size: 2rem;
+  --nav-color: #FFFFFF;
+  --ui-opacity: 0.5;
+  --ytv-brand-color: #d300ff;
+}
+
+@font-face {
+  font-family: 'CRT';
+  src: url(frontend/fonts/monospace.ttf);
+}
+
+*:not(dialog) {
+  margin: 0;
+}
+
+body {
+  background: var(--body-background);
+}
+
+nav {
+  position: absolute;
+  top: 1rem;
+  right: 0;
+  display: block;
+  z-index: 2;
+}
+
+nav > ul {
+  display: flex;
+  list-style-type: none;
+  justify-content: space-between;
+}
+
+nav > ul > li {
+  display: block;
+  float: left;
+}
+
+nav > ul> li > a {
+  font-family: CRT;
+  padding: 0 1em;
+  text-decoration: none;
+  font-size: var(--nav-font-size);
+  color: var(--nav-color);
+}
+
+#logo {
+  display: block;
+  position: absolute;
+  z-index: 0;
+  right: 1em;
+  bottom: 1em;
+  opacity: var(--ui-opacity);
+}
+
+#logo > img {
+  width: 80px;
+}
+
+#schedule {
+  display: flex;
+  flex-direction: column;
+  background: black;
+  color: #FFFFFF;
+  padding: 5em 10em;
+}
+
+#schedule > h1 {
+  font-family: 'CRT';
+  text-align: center;
+}
+
+table {
+  margin-top: 3em;
+  font-family: 'CRT';
+  text-align: center;
+}
+
+td {
+  padding: 0.5em;
+}
+
+a {
+  color: var(--ytv-brand-color);
+}
