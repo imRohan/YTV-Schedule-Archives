@@ -38,7 +38,6 @@
   padding-bottom: 56.25%;
   height: 0;
   display: block;
-  overflow: hidden;
 }
 
 #video__container iframe {
@@ -57,7 +56,7 @@
   left: 3rem;
   font-size: var(--metadata-font-size);
   color: var(--metadata-color);
-  font-family: CRT;
+  font-family: "Jersey 10", sans-serif;
   will-change: text-shadow;
   animation: rgbText 10s steps(9) 0s infinite alternate;
 }
@@ -67,7 +66,7 @@
   bottom: 2rem;
   left: 3rem;
   color: var(--metadata-color);
-  font-family: CRT;
+  font-family: "Jersey 10", sans-serif;
   line-height: 1;
   display: flex;
   flex-direction: column;

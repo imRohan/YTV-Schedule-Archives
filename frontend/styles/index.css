@@ -9,11 +9,6 @@
   --ytv-brand-color: #d300ff;
 }
 
-@font-face {
-  font-family: 'CRT';
-  src: url(frontend/fonts/monospace.ttf);
-}
-
 *:not(dialog) {
   margin: 0;
 }
@@ -42,7 +37,7 @@ nav > ul > li {
 }
 
 nav > ul> li > a {
-  font-family: CRT;
+  font-family: "Jersey 10", sans-serif;
   padding: 0 1em;
   text-decoration: none;
   font-size: var(--nav-font-size);
