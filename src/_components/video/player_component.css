@@ -38,9 +38,7 @@
   position: relative;
   padding-bottom: 56.25%;
   height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
 }
 
 #video__container iframe {
@@ -53,12 +51,17 @@
 }
 
 #video__notice {
-  margin-top: 50%;
-  font-size: var(--metadata-font-size--small);
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: var(--metadata-font-size);
   color: var(--metadata-color);
   font-family: "Jersey 10", sans-serif;
   pointer-events: none;
-  z-index: 2;
+  will-change: text-shadow;
+  animation: rgbText 5s steps(9) 0s infinite alternate;
 }
 
 #context__container {
