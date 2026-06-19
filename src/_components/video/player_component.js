@@ -1,6 +1,7 @@
 class PlayerComponent {
   constructor(schedule) {
     this.schedule = schedule
+    this.player = null
   }
 
   currentTime() {
@@ -43,21 +44,41 @@ class PlayerComponent {
     }
   }
 
-  iframe() {
-    const show = this.currentShow()
-    return `
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/${show.videoID}?controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
-  }
-
   loadPlayer() {
     this.attachIframe()
     this.loadNowPlayingData()
   }
 
   attachIframe() {
-    const videoContainer = document.getElementById('video__container')
-    videoContainer.innerHTML = this.iframe()
-    console.log('iFrame loaded')
+    const show = this.currentShow()
+    this.player = new YT.Player('player', {
+      height: '390',
+      width: '640',
+      videoId: show.videoID,
+      events: {
+        'onStateChange': this.onPlayerStateChange,
+      },
+      playerVars: {
+        'start': 30,
+        'mute': 1,
+        'controls': 0,
+        'autoplay': 1,
+        'rel': 0,
+        'showinfo': 0,
+        'playsinline': 1,
+        'color':'white',
+        'loop': 1,
+      },
+    });
+  }
+
+  onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PAUSED && event.target.isMuted()) {
+      event.target.unMute();
+      event.target.playVideo();
+      const notice = document.getElementById('video__notice')
+      notice.style.display = 'none'
+    }
   }
 
   loadNowPlayingData() {
@@ -68,7 +89,6 @@ class PlayerComponent {
     titleContainer.innerHTML = show
     subTitleContainer.innerHTML = episode
     timeContainer.innerHTML = this.timeFormatted(this.currentTime())
-    console.log('metadata loaded')
   }
 }
 

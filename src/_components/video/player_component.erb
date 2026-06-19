@@ -1,5 +1,8 @@
 <scanlines id="scanlines"></scanlines>
-<video-component id="video__container"></video-component>
+<video-component id="video__container">
+  <video-notice id="video__notice">Click to Unmute</video-notice>
+  <div id="player"></div>
+</video-component>
 <context-component id="context__container">
   CH 25
 </context-component>
@@ -15,7 +18,14 @@
 
 <script defer>
   document.addEventListener("DOMContentLoaded", function(){
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  })
+
+  function onYouTubeIframeAPIReady() {
     window.player = new PlayerComponent(<%= raw(@schedule_hash.to_json) %>)
     player.loadPlayer()
-  })
+  }
 </script>
