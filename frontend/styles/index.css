@@ -46,8 +46,6 @@ nav > ul> li > a {
   text-decoration: none;
   font-size: var(--nav-font-size);
   color: var(--nav-color);
-  will-change: text-shadow;
-  animation: rgbText 10s steps(9) 0s infinite alternate;
 }
 
 #logo {

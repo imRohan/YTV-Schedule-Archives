@@ -1,5 +1,6 @@
 :root {
   --metadata-color: #ffffff;
+  --metadata-font-size--large: 10rem;
   --metadata-font-size: 5rem;
   --metadata-font-size--small: 3rem;
   --metadata-font-size--xsmall: 1.5rem;
@@ -54,11 +55,11 @@
   position: absolute;
   top: 2rem;
   left: 3rem;
-  font-size: var(--metadata-font-size);
+  font-size: var(--metadata-font-size--large);
   color: var(--metadata-color);
   font-family: "Jersey 10", sans-serif;
   will-change: text-shadow;
-  animation: rgbText 10s steps(9) 0s infinite alternate;
+  animation: rgbText 30s steps(9) 0s infinite alternate;
 }
 
 #now-playing__container {
@@ -71,7 +72,7 @@
   display: flex;
   flex-direction: column;
   will-change: text-shadow;
-  animation: rgbText 10s steps(9) 0s infinite alternate;
+  animation: rgbText 20s steps(9) 0s infinite alternate;
 }
 
 #now-playing__super {
