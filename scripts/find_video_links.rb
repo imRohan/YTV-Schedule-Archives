@@ -128,5 +128,5 @@ class LinkFinder
   end
 end
 
-finder = LinkFinder.new
+finder = LinkFinder.new(start_date: 'June 19, 2001', end_date: 'June 19, 2001')
 finder.call
