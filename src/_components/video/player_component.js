@@ -40,7 +40,7 @@ class PlayerComponent {
     if(videoID) {
       return content
     } else {
-      return { show: "No Content", episode: "N/a", videoID: "123" }
+      return { show: "No Content", episode: "N/a", videoID: "7xmtQdDQ2ik" }
     }
   }
 
