@@ -30,8 +30,6 @@ class LinkFinder
     puts "Reading schedules between #{start_date} & #{end_date}"
     (start_date..end_date).each do |date|
       if quota_reached
-        puts ''
-        puts "Quota reached: #{date}"
         break
       else
         process_schedule(date)
@@ -45,14 +43,20 @@ class LinkFinder
     if File.exist?(file_path)
       update_existing_schedule(file_path: file_path, date: date)
     else
-      print '❎'
+      puts '❎'
     end
   end
 
   def update_existing_schedule(file_path:, date:)
     schedule_rows = [['Time', 'Show', 'Episode', 'Youtube Video ID']]
     CSV.foreach(file_path, headers: true) do |row|
-      schedule_rows << parse_and_update_show(row: row)
+      if quota_reached
+        puts '🐛'
+        print 'Quota reached'
+        break
+      else
+        schedule_rows << parse_and_update_show(row: row)
+      end
     end
     save_schedule(rows: schedule_rows, file_path: file_path)
     update_frontend_schedule(rows: schedule_rows, date: date)
@@ -68,8 +72,9 @@ class LinkFinder
   end
 
   def find_youtube_id(existing_id:, show:, episode:)
+    print "#{show} #{episode} - #{existing_id} #{existing_id.present?}"
     if existing_id.present?
-      print '✅'
+      puts '✅'
       existing_id
     else
       query_youtube!(show: show, episode: episode)
@@ -88,10 +93,10 @@ class LinkFinder
     end
 
     if video.present?
-      print '🆕'
+      puts '🆕'
       video.id.video_id
     else
-      print '🐛'
+      puts '🐛'
       nil
     end
   end
@@ -105,10 +110,12 @@ class LinkFinder
   end
 
   def save_schedule(rows:, file_path:)
+    return if quota_reached
     File.write(file_path, rows.map(&:to_csv).join)
   end
 
   def update_frontend_schedule(rows:, date:)
+    return if quota_reached
     save_frontend_schedule(rows: rows)
     save_frontend_schedule_metadata(date: date)
   end
@@ -127,6 +134,9 @@ class LinkFinder
     File.write(file_path, YAML.dump(metadata))
   end
 end
-
-finder = LinkFinder.new(start_date: 'June 19, 2001', end_date: 'June 19, 2001')
+today = Date.today
+month = today.strftime('%B')
+date = today.day
+finder = LinkFinder.new(start_date: "#{month} #{date}, 2001",
+                        end_date: "#{month} #{date}, 2001")
 finder.call
