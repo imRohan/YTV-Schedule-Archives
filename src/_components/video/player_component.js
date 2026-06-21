@@ -1,7 +1,9 @@
 class PlayerComponent {
-  constructor(schedule) {
+  constructor(schedule, interstitialVideoIds) {
     this.schedule = schedule
+    this.interstitialVideoIds = interstitialVideoIds
     this.player = null
+    this.currentVideoID = null
   }
 
   currentTime() {
@@ -50,11 +52,11 @@ class PlayerComponent {
   }
 
   attachIframe() {
-    const show = this.currentShow()
+    const { videoID } = this.currentShow()
     this.player = new YT.Player('player', {
       height: '390',
       width: '640',
-      videoId: show.videoID,
+      videoId: videoID,
       events: {
         'onStateChange': this.onPlayerStateChange,
       },
@@ -67,18 +69,51 @@ class PlayerComponent {
         'showinfo': 0,
         'playsinline': 1,
         'color':'white',
-        'loop': 1,
       },
-    });
+    })
+    this.currentVideoID = videoID
   }
 
   onPlayerStateChange(event) {
-    if (event.data == YT.PlayerState.PAUSED && event.target.isMuted()) {
+    switch(event.data) {
+      case YT.PlayerState.PAUSED:
+        window.player.handlePausedState(event)
+        break;
+      case YT.PlayerState.ENDED:
+        window.player.handleEndedState()
+        break;
+    }
+
+  }
+
+  handlePausedState(event) {
+    if (event.target.isMuted()) {
       event.target.unMute();
       event.target.playVideo();
       const notice = document.getElementById('video__notice')
       notice.style.display = 'none'
     }
+  }
+
+  handleEndedState() {
+    const { videoID } = this.currentShow()
+    if (this.currentVideoID === videoID) {
+      this.playInterstitialVideo()
+    } else {
+      this.playNewShow()
+    }
+  }
+
+  playInterstitialVideo() {
+   const randomIndex = Math.floor(Math.random() * this.interstitialVideoIds.length)
+   const randomVideoId = this.interstitialVideoIds[randomIndex]
+   this.player.loadVideoById(randomVideoId)
+  }
+
+  playNewShow() {
+    const videoID = this.currentVideoID
+    this.player.loadVideoById(videoID)
+    this.currentVideoID = videoID
   }
 
   loadNowPlayingData() {

@@ -24,7 +24,7 @@
   })
 
   function onYouTubeIframeAPIReady() {
-    window.player = new PlayerComponent(<%= raw(@schedule_hash.to_json) %>)
+    window.player = new PlayerComponent(<%= raw(@schedule_hash.to_json) %>, <%= raw(@interstitial_video_ids) %>)
     player.loadPlayer()
   }
 </script>

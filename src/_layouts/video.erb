@@ -2,5 +2,6 @@
 layout: default
 ---
 <%= render Video::PlayerComponent.new(schedule: site.data.schedule,
-                                      metadata: site.data.schedule_metadata) %>
+                                      metadata: site.data.schedule_metadata,
+                                      interstitial_content: site.data.interstitial_content) %>
 <%= render "logo" %>
