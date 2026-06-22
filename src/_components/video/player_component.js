@@ -38,21 +38,32 @@ class PlayerComponent {
 
   getContentForTime(time) {
     const content = this.schedule[time]
-    const { videoID } = content
-    if(videoID) {
+    const { show, videoID } = content
+    if(show && videoID) {
       return content
     } else {
-      return { show: "No Content", episode: "N/a", videoID: "7xmtQdDQ2ik" }
+      return { show: "No Content", episode: "Sorry folks!", videoID: "7xmtQdDQ2ik" }
     }
   }
 
   loadPlayer() {
-    this.attachIframe()
+    this.playInitialVideo()
     this.loadNowPlayingData()
   }
 
-  attachIframe() {
-    const { videoID } = this.currentShow()
+  playInitialVideo() {
+    const rand = Math.random()
+    if (rand < 0.6) {
+      const { videoID } = this.currentShow()
+      this.currentVideoID = videoID
+      this.attachIframe(videoID, 30)
+    } else {
+      const randomVideoId = this.getRandomInterstitialVideoId()
+      this.attachIframe(randomVideoId, 5)
+    }
+  }
+
+  attachIframe(videoID, start) {
     this.player = new YT.Player('player', {
       height: '390',
       width: '640',
@@ -61,7 +72,7 @@ class PlayerComponent {
         'onStateChange': this.onPlayerStateChange,
       },
       playerVars: {
-        'start': 30,
+        start,
         'mute': 1,
         'controls': 0,
         'autoplay': 1,
@@ -71,7 +82,6 @@ class PlayerComponent {
         'color':'white',
       },
     })
-    this.currentVideoID = videoID
   }
 
   onPlayerStateChange(event) {
@@ -104,14 +114,18 @@ class PlayerComponent {
     }
   }
 
-  playInterstitialVideo() {
+  getRandomInterstitialVideoId() {
    const randomIndex = Math.floor(Math.random() * this.interstitialVideoIds.length)
-   const randomVideoId = this.interstitialVideoIds[randomIndex]
+   return this.interstitialVideoIds[randomIndex]
+  }
+
+  playInterstitialVideo() {
+   const randomVideoId = this.getRandomInterstitialVideoId()
    this.player.loadVideoById(randomVideoId)
   }
 
   playNewShow() {
-    const videoID = this.currentVideoID
+    const { videoID } = this.currentShow()
     this.player.loadVideoById(videoID)
     this.currentVideoID = videoID
   }
@@ -121,6 +135,7 @@ class PlayerComponent {
     const titleContainer = document.getElementById('now-playing__title')
     const subTitleContainer = document.getElementById('now-playing__subtitle')
     const timeContainer = document.getElementById('time__container')
+    document.title = `YTV Archive Channel | ${show}`
     titleContainer.innerHTML = show
     subTitleContainer.innerHTML = episode
     timeContainer.innerHTML = this.timeFormatted(this.currentTime())
