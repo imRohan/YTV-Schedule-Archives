@@ -50,13 +50,7 @@ class LinkFinder
   def update_existing_schedule(file_path:, date:)
     schedule_rows = [['Time', 'Show', 'Episode', 'Youtube Video ID']]
     CSV.foreach(file_path, headers: true) do |row|
-      if quota_reached
-        puts '🐛'
-        print 'Quota reached'
-        break
-      else
-        schedule_rows << parse_and_update_show(row: row)
-      end
+      schedule_rows << parse_and_update_show(row: row)
     end
     save_schedule(rows: schedule_rows, file_path: file_path)
     update_frontend_schedule(rows: schedule_rows, date: date)
@@ -85,19 +79,24 @@ class LinkFinder
   end
 
   def query_youtube!(show:, episode:)
-    search_string = generate_search_string(show: show, episode: episode)
-    search_response = client.list_searches(['snippet'], q: search_string)
-
-    video = search_response.items.detect do |item|
-      item.id.kind == 'youtube#video'
-    end
-
-    if video.present?
-      puts '🆕'
-      video.id.video_id
-    else
+    if quota_reached
       puts '🐛'
       nil
+    else
+      search_string = generate_search_string(show: show, episode: episode)
+      search_response = client.list_searches(['snippet'], q: search_string)
+
+      video = search_response.items.detect do |item|
+        item.id.kind == 'youtube#video'
+      end
+
+      if video.present?
+        puts '🆕'
+        video.id.video_id
+      else
+        puts '🐛'
+        nil
+      end
     end
   end
 
@@ -110,12 +109,10 @@ class LinkFinder
   end
 
   def save_schedule(rows:, file_path:)
-    return if quota_reached
     File.write(file_path, rows.map(&:to_csv).join)
   end
 
   def update_frontend_schedule(rows:, date:)
-    return if quota_reached
     save_frontend_schedule(rows: rows)
     save_frontend_schedule_metadata(date: date)
   end
@@ -134,6 +131,7 @@ class LinkFinder
     File.write(file_path, YAML.dump(metadata))
   end
 end
+
 today = Date.today
 month = today.strftime('%B')
 date = today.day
