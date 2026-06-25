@@ -66,7 +66,7 @@ class LinkFinder
   end
 
   def find_youtube_id(existing_id:, show:, episode:)
-    print "#{show} #{episode} - #{existing_id} #{existing_id.present?}"
+    print "#{show} #{episode} - #{existing_id} "
     if existing_id.present?
       puts '✅'
       existing_id
@@ -80,7 +80,7 @@ class LinkFinder
 
   def query_youtube!(show:, episode:)
     if quota_reached
-      puts '🐛'
+      puts '🛑'
       nil
     else
       search_string = generate_search_string(show: show, episode: episode)
@@ -113,6 +113,7 @@ class LinkFinder
   end
 
   def update_frontend_schedule(rows:, date:)
+    return if quota_reached
     save_frontend_schedule(rows: rows)
     save_frontend_schedule_metadata(date: date)
   end
@@ -132,7 +133,7 @@ class LinkFinder
   end
 end
 
-today = Date.today
+today = Date.today + 1
 month = today.strftime('%B')
 date = today.day
 finder = LinkFinder.new(start_date: "#{month} #{date}, 2001",
