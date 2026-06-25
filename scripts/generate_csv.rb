@@ -68,5 +68,5 @@ class CsvGenerator
   end
 end
 
-generator = CsvGenerator.new(start_date: 'January 1, 2010')
+generator = CsvGenerator.new
 generator.generate
