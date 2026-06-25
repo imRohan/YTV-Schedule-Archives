@@ -26,7 +26,7 @@ jobs:
       - name: Scrape Data
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-        run: "ruby scripts/find_youtube_links.rb"
+        run: "ruby ./scripts/find_youtube_links.rb"
 
       - name: Build
         env:
