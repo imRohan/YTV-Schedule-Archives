@@ -48,6 +48,13 @@
   width: 140%;
   height: 140%;
   opacity: 1;
+
+  @media (max-width: 1023px) {
+    top: -50%;
+    left: -200%;
+    width: 500%;
+    height: 500%;
+  }
 }
 
 #video__notice {
@@ -62,6 +69,11 @@
   pointer-events: none;
   will-change: text-shadow;
   animation: rgbText 5s steps(9) 0s infinite alternate;
+  text-align: center;
+
+  @media (max-width: 1023px) {
+    font-size: var(--metadata-font-size--small);
+  }
 }
 
 #context__container {
@@ -74,6 +86,11 @@
   font-family: "Jersey 10", sans-serif;
   will-change: text-shadow;
   animation: rgbText 30s steps(9) 0s infinite alternate;
+
+  @media (max-width: 1023px) {
+    left: 1rem;
+    font-size: var(--metadata-font-size);
+  }
 }
 
 #now-playing__container {
@@ -87,6 +104,10 @@
   flex-direction: column;
   will-change: text-shadow;
   animation: rgbText 20s steps(9) 0s infinite alternate;
+
+  @media (max-width: 1023px) {
+    left: 1rem;
+  }
 }
 
 #now-playing__super {

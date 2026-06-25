@@ -19,6 +19,11 @@ body {
 
 main {
   overflow: hidden;
+
+  @media (max-width: 1023px) {
+    height: 100vh;
+    max-height: 100vh;
+  }
 }
 
 nav {
@@ -27,12 +32,17 @@ nav {
   right: 0;
   display: block;
   z-index: 2;
+
+  @media (max-width: 1023px) {
+    display: none;
+  }
 }
 
 nav > ul {
   display: flex;
   list-style-type: none;
   justify-content: space-between;
+  padding: 0;
 }
 
 nav > ul > li {
