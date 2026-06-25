@@ -21,12 +21,12 @@ class PlayerComponent {
     const currentHour = time.
       toLocaleString('en-US', { hour: 'numeric', hour12: true,
                                 minute: '2-digit' })
-    return currentHour.replace(' AM', 'am').replace(' PM', 'pm')
+    return currentHour.replace(' AM', ' am').replace(' PM', ' pm')
   }
 
   currentShow() {
-    const time = this.timeFormatted(this.currentTime())
-    return this.getContentForTime(time)
+    const currentTime = this.timeFormatted(new Date())
+    return this.getContentForTime(currentTime)
   }
 
   nextShow() {
@@ -36,8 +36,12 @@ class PlayerComponent {
     return this.schedule[time]
   }
 
-  getContentForTime(time) {
-    const content = this.schedule[time]
+  getContentForTime(targetTime) {
+    const pastTimes = Object.keys(this.schedule).filter((scheduleTime) => {
+      const scheduleTimeFixed = scheduleTime.replace('am', ' am').replace('pm', ' pm')
+      return Date.parse('01/01/2011 '+ scheduleTimeFixed) <= Date.parse('01/01/2011 ' + targetTime)
+    })
+    const content = this.schedule[pastTimes[pastTimes.length - 1]]
     const { show, videoID } = content
     if(show && videoID) {
       return content
@@ -131,14 +135,14 @@ class PlayerComponent {
   }
 
   loadNowPlayingData() {
-    const { show, episode } = this.currentShow()
+    const { time, show, episode } = this.currentShow()
     const titleContainer = document.getElementById('now-playing__title')
     const subTitleContainer = document.getElementById('now-playing__subtitle')
     const timeContainer = document.getElementById('time__container')
     document.title = `YTV Archive Channel | ${show}`
     titleContainer.innerHTML = show
     subTitleContainer.innerHTML = episode
-    timeContainer.innerHTML = this.timeFormatted(this.currentTime())
+    timeContainer.innerHTML = time
   }
 }
 
