@@ -29,4 +29,4 @@ jobs:
       - name: Scrape Data
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-        run: ruby "${GITHUB_WORKSPACE}/scripts/find_video_links.rb"
+        run: bundle exec "${GITHUB_WORKSPACE}/scripts/find_video_links.rb"
