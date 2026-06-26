@@ -133,7 +133,7 @@ class LinkFinder
   end
 end
 
-today = Date.today + 1
+today = Date.today
 month = today.strftime('%B')
 date = today.day
 finder = LinkFinder.new(start_date: "#{month} #{date}, 2001",
