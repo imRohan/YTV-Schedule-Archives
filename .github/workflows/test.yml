@@ -23,6 +23,9 @@ jobs:
           cache: "npm"
       - run: npm install
 
+      - name: Install Gems
+        run: bundle install
+
       - name: Scrape Data
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
