@@ -23,13 +23,7 @@ jobs:
           cache: "npm"
       - run: npm install
 
-      - name: Debug
-        run: ls $GITHUB_WORKSPACE
-
-      - name: Debug2
-        run: ls "${GITHUB_WORKSPACE}/scripts/"
-
       - name: Scrape Data
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-        run: ruby "${GITHUB_WORKSPACE}/scripts/find_youtube_links.rb"
+        run: ruby "${GITHUB_WORKSPACE}/scripts/find_video_links.rb"
