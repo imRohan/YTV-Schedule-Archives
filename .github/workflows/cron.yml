@@ -2,7 +2,7 @@ name: Daily Cron Job
 
 on:
   schedule:
-    - cron: '0 6 * * *'
+    - cron: '0 1 * * *'
       timezone: 'America/New_York'
 
 jobs:
@@ -23,10 +23,13 @@ jobs:
           cache: "npm"
       - run: npm install
 
+      - name: Install Gems
+        run: bundle install
+
       - name: Scrape Data
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-        run: "ruby ./scripts/find_youtube_links.rb"
+        run: bundle exec "${GITHUB_WORKSPACE}/scripts/find_video_links.rb"
 
       - name: Build
         env:
