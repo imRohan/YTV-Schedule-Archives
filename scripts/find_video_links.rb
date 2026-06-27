@@ -52,7 +52,6 @@ class LinkFinder
     CSV.foreach(file_path, headers: true) do |row|
       schedule_rows << parse_and_update_show(row: row)
     end
-    save_schedule(rows: schedule_rows, file_path: file_path)
     update_frontend_schedule(rows: schedule_rows, date: date)
   end
 
@@ -106,10 +105,6 @@ class LinkFinder
     else
       "#{show} - #{episode} full episode"
     end
-  end
-
-  def save_schedule(rows:, file_path:)
-    File.write(file_path, rows.map(&:to_csv).join)
   end
 
   def update_frontend_schedule(rows:, date:)
