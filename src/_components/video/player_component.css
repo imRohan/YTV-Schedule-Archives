@@ -99,7 +99,7 @@
   left: 3rem;
   color: var(--metadata-color);
   font-family: "Jersey 10", sans-serif;
-  line-height: 1;
+  line-height: 0.85;
   display: flex;
   flex-direction: column;
   will-change: text-shadow;
@@ -120,4 +120,17 @@
 
 #now-playing__subtitle {
   font-size: var(--metadata-font-size--small);
+}
+
+#report-content {
+  background: none;
+  border: none;
+  color: var(--metadata-color);
+  font-family: "Jersey 10", sans-serif;
+  font-size: var(--metadata-font-size--xsmall);
+  text-align: left;
+  padding: 0.25rem 0;
+  cursor: pointer;
+  will-change: text-shadow;
+  animation: rgbText 20s steps(9) 0s infinite alternate;
 }

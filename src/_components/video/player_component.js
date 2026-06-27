@@ -1,5 +1,6 @@
 class PlayerComponent {
-  constructor(schedule, interstitialVideoIds) {
+  constructor(scheduleDate, schedule, interstitialVideoIds) {
+    this.scheduleDate = scheduleDate
     this.schedule = schedule
     this.interstitialVideoIds = interstitialVideoIds
     this.player = null
@@ -53,6 +54,7 @@ class PlayerComponent {
   loadPlayer() {
     this.playInitialVideo()
     this.loadNowPlayingData()
+    this.initClickEvents()
   }
 
   playInitialVideo() {
@@ -143,6 +145,19 @@ class PlayerComponent {
     titleContainer.innerHTML = show
     subTitleContainer.innerHTML = episode
     timeContainer.innerHTML = time
+  }
+
+  initClickEvents() {
+    const reportButton = document.getElementById('report-content')
+    reportButton.addEventListener('click', (event) => {
+      this.reportContent()
+    })
+  }
+
+  reportContent() {
+    const { time, show, episode, videoID } = this.currentShow()
+    const issuePath = `https://github.com/imRohan/YTV-Schedule-Archives/issues/new?title=[${this.scheduleDate}] ${show}&body=${this.scheduleDate} @ ${time}: ${show}, ${episode}, incorrect video id: ${videoID}.&labels=Incorrect Content&assignees=imRohan`
+    window.open(issuePath, '_blank').focus()
   }
 }
 

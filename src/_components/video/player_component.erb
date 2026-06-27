@@ -13,6 +13,7 @@
   </now-playing-super>
   <now-playing-title id="now-playing__title"></now-playing-title>
   <now-playing-subtitle id="now-playing__subtitle"></now-playing-subtitle>
+  <button id="report-content">Report Broken/Invalid Show</button>
 </now-playing-component>
 
 <script defer>
@@ -24,7 +25,7 @@
   })
 
   function onYouTubeIframeAPIReady() {
-    window.player = new PlayerComponent(<%= raw(@schedule_hash.to_json) %>, <%= raw(@interstitial_video_ids) %>)
+    window.player = new PlayerComponent('<%= @schedule_date %>', <%= raw(@schedule_hash.to_json) %>, <%= raw(@interstitial_video_ids) %>)
     player.loadPlayer()
   }
 </script>
