@@ -47,7 +47,7 @@ jobs:
           path: ./output
 
   deploy:
-    needs: scrape_and_build
+    needs: build
 
     permissions:
       pages: write
