@@ -6,40 +6,36 @@ require 'google/apis/youtube_v3'
 require 'csv'
 require 'pry'
 
-class LinkFinder
-  attr_accessor :start_date, :end_date, :client, :quota_reached
+class ScheduleUpdater
+  attr_accessor :date, :client, :year, :quota_reached
 
-  def initialize(start_date: 'January 1, 2000', end_date: Date.today.to_s,
-                 client: Google::Apis::YoutubeV3::YouTubeService.new)
-    @start_date = Date.parse(start_date)
-    @end_date = Date.parse(end_date)
+  def initialize(date:, client: Google::Apis::YoutubeV3::YouTubeService.new,
+                 year: 2001)
+    @date = date
     @client = client
+    @year = year
     @quota_reached = false
   end
 
   def call
     configure_client
-    read_and_process_schedules
+    process_schedule
   end
 
   def configure_client
     client.key = ENV.fetch('GOOGLE_API_KEY')
   end
 
-  def read_and_process_schedules
-    puts "Reading schedules between #{start_date} & #{end_date}"
-    (start_date..end_date).each do |date|
-      if quota_reached
-        break
-      else
-        process_schedule(date)
-      end
-    end
+  def schedule_date
+    month = date.strftime('%B')
+    day = date.day
+    Date.parse("#{month} #{day}, #{year}")
   end
 
-  def process_schedule(date)
-    year = date.strftime('%Y')
-    file_path = "./#{year}/#{date}.csv"
+  def process_schedule
+    puts "Updating schedule for #{schedule_date}"
+    year = schedule_date.strftime('%Y')
+    file_path = "./#{year}/#{schedule_date}.csv"
     if File.exist?(file_path)
       update_existing_schedule(file_path: file_path, date: date)
     else
@@ -128,9 +124,5 @@ class LinkFinder
   end
 end
 
-today = Date.today
-month = today.strftime('%B')
-date = today.day
-finder = LinkFinder.new(start_date: "#{month} #{date}, 2001",
-                        end_date: "#{month} #{date}, 2001")
-finder.call
+updater = ScheduleUpdater.new(date: Date.today)
+updater.call
