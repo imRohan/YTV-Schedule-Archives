@@ -27,9 +27,8 @@ class ScheduleUpdater
   end
 
   def schedule_date
-    month = date.strftime('%B')
-    day = date.day
-    Date.parse("#{month} #{day}, #{year}")
+    @schedule_date ||= Date
+                       .parse("#{date.strftime('%B')} #{date.day}, #{year}")
   end
 
   def process_schedule
@@ -37,7 +36,7 @@ class ScheduleUpdater
     year = schedule_date.strftime('%Y')
     file_path = "./#{year}/#{schedule_date}.csv"
     if File.exist?(file_path)
-      update_existing_schedule(file_path: file_path, date: date)
+      update_existing_schedule(file_path: file_path, date: schedule_date)
     else
       puts '❎'
     end

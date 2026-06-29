@@ -57,15 +57,21 @@ class PlayerComponent {
     this.initClickEvents()
   }
 
+  randomNumberBetween(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }
+
   playInitialVideo() {
     const rand = Math.random()
     if (rand < 0.6) {
       const { videoID } = this.currentShow()
       this.currentVideoID = videoID
-      this.attachIframe(videoID, 30)
+      const startTimeSec = this.randomNumberBetween(30, 240)
+      this.attachIframe(videoID, startTimeSec)
     } else {
       const randomVideoId = this.getRandomInterstitialVideoId()
-      this.attachIframe(randomVideoId, 5)
+      const startTimeSec = this.randomNumberBetween(2, 30)
+      this.attachIframe(randomVideoId, startTimeSec)
     }
   }
 
@@ -134,6 +140,7 @@ class PlayerComponent {
     const { videoID } = this.currentShow()
     this.player.loadVideoById(videoID)
     this.currentVideoID = videoID
+    this.loadNowPlayingData()
   }
 
   loadNowPlayingData() {
