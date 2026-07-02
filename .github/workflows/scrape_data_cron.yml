@@ -1,4 +1,4 @@
-name: Weekly Cron Job
+name: Fetch New Schedules
 
 on:
   schedule:

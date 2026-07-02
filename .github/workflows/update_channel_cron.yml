@@ -1,4 +1,4 @@
-name: Daily Cron Job
+name: Update Channel Schedule
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
       timezone: 'America/New_York'
 
 jobs:
-  update_schedule_and_commit_changes:
+  update_channel_schedule:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
