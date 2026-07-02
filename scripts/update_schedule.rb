@@ -103,7 +103,6 @@ class ScheduleUpdater
   end
 
   def update_frontend_schedule(rows:, date:)
-    return if quota_reached
     save_frontend_schedule(rows: rows)
     save_frontend_schedule_metadata(date: date)
   end
