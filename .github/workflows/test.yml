@@ -1,0 +1,33 @@
+name: Test Update Schedule and Commit
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update_schedule_and_build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Install Gems
+        run: bundle install
+
+      - name: Update Schedule
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: bundle exec "${GITHUB_WORKSPACE}/scripts/update_schedule.rb"
+
+      - name: Commit Changes
+        run: |
+          git config user.name "imRohan"
+          git config user.email "rohan@likhite.email"
+          git add "${GITHUB_WORKSPACE}/src/_data/schedule.csv"
+          git commit -m "Updated Schedule"
+          git push
