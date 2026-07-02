@@ -1,0 +1,31 @@
+name: Weekly Cron Job
+
+on:
+  schedule:
+    - cron: '0 6 * * 5'
+      timezone: 'America/New_York'
+
+jobs:
+  fetch_new_schedules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Install Gems
+        run: bundle install
+
+      - name: Update Schedule
+        run: bundle exec "${GITHUB_WORKSPACE}/scripts/find_new_schedules.rb"
+
+      - name: Commit Changes
+        run: |
+          git config user.name "imRohan"
+          git config user.email "rohan@likhite.email"
+          git add .
+          git commit -m "Added new schedules"
+          git push

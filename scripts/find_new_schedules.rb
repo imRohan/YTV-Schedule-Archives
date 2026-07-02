@@ -5,7 +5,7 @@ require 'open-uri'
 require 'csv'
 require 'pry'
 
-class CsvGenerator
+class ScheduleFinder
   attr_accessor :start_date, :end_date, :errors, :csv_rows
 
   def initialize(start_date: 'September 1, 1988', end_date: Date.today.to_s)
@@ -15,21 +15,20 @@ class CsvGenerator
     @csv_rows = []
   end
 
-  def generate
-    puts "Fetching schedules between #{start_date}-#{end_date}"
+  def call
+    puts "Finding schedules between #{start_date}-#{end_date}"
     (start_date..end_date).each do |date|
       year = date.strftime('%Y')
       file_path = "./#{year}/#{date}.csv"
-      if File.exist?(file_path)
-        print 's'
-      else
+      unless File.exist?(file_path)
+        print "#{date} "
         schedule = get_schedule_for_date(date)
         csv_rows = parse_schedule(schedule)
         save_csv(date: date, rows: csv_rows)
-        print '.'
+        puts '🆕'
       end
     rescue => e
-      print 'e'
+      puts '🐛'
       errors << "Error for #{date}: #{e}"
     end
 
@@ -68,5 +67,5 @@ class CsvGenerator
   end
 end
 
-generator = CsvGenerator.new
-generator.generate
+finder = ScheduleFinder.new
+finder.call
