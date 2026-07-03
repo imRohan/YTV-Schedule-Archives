@@ -16,6 +16,13 @@ jobs:
         with:
           bundler-cache: true
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+      - run: npm install
+
       - name: Install Gems
         run: bundle install
 
@@ -28,6 +35,33 @@ jobs:
         run: |
           git config user.name "imRohan"
           git config user.email "rohan@likhite.email"
-          git add "${GITHUB_WORKSPACE}/src/_data/schedule.csv"
+          git add .
           git commit -m "Updated Schedule"
           git push
+
+      - name: Build
+        env:
+          BRIDGETOWN_ENV: production
+        run: bin/bridgetown deploy
+
+      - name: Upload build artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./output
+
+  deploy:
+    needs: update_channel_schedule
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
