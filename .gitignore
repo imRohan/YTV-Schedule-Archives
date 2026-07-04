@@ -40,3 +40,6 @@ yarn-debug.log*
 /tmp/pids/*
 !/tmp/pids/
 !/tmp/pids/.keep
+
+# Ignore GitHub Actions Vendor directory.
+vendor/

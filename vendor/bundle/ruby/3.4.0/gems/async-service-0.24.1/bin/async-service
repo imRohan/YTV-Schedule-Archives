@@ -1,7 +1,0 @@
-#!/usr/bin/env ruby
-# frozen_string_literal: true
-
-require "async/service"
-
-configuration = Async::Service::Configuration.load
-Async::Service::Controller.run(configuration)
