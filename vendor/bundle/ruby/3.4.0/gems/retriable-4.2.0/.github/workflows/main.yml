@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    # The type of runner that the job will run on
+    runs-on: ${{ matrix.os }}
+    # Ruby 4.0 is still in preview. Treat its results as informational so a
+    # preview-only regression doesn't block merges. Drop this gate (or update
+    # the version literal) once Ruby 4.0 is released and we treat it as
+    # required.
+    continue-on-error: ${{ matrix.ruby == '4.0' }}
+    strategy:
+      matrix:
+        os: [ubuntu-24.04]
+        ruby:
+          [
+            "3.2",
+            "3.3",
+            "3.4",
+            "4.0",
+            jruby,
+          ]
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Setup ruby
+        uses: ruby/setup-ruby@afeafc3d1ab54a631816aba4c914a0081c12ff2f # v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+
+      - name: ruby version
+        run: ruby -v
+
+      - name: Run rspec
+        run: bundle exec rspec
+
+  lint:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Setup ruby
+        uses: ruby/setup-ruby@afeafc3d1ab54a631816aba4c914a0081c12ff2f # v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Run rubocop
+        run: bundle exec rubocop
+
+      - name: Validate RBS
+        run: bundle exec rbs -I sig validate
+
+  audit:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Setup ruby
+        uses: ruby/setup-ruby@afeafc3d1ab54a631816aba4c914a0081c12ff2f # v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Run bundler-audit
+        run: bundle exec bundle-audit check --update

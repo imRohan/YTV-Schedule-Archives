@@ -1,0 +1,278 @@
+# HEAD
+
+## 4.2.0
+
+### Bug fixes
+
+- The `Kernel` extension methods (`require "retriable/core_ext/kernel"`) are now
+  private, matching idiomatic `Kernel` helpers like `puts` and `rand`.
+  Previously `retriable` and `retriable_with_context` were public instance
+  methods, so they leaked onto every object's public API and could be invoked
+  with an explicit receiver (e.g. `"foo".retriable { ... }`). They remain
+  callable in the documented receiver-less form.
+  ([#146](https://github.com/kamui/retriable/pull/146))
+- `Retriable.with_context` (and `Kernel#retriable_with_context`) now raises
+  `ArgumentError` when called without a block, matching `with_override`.
+  Previously a missing block was silently ignored: the call returned `nil` and
+  the intended block never ran, hiding a caller bug. Behavior change: code that
+  relied on the silent no-op will now raise.
+- `Config#validate!` now validates the structure of each entry in `contexts`,
+  so configured contexts are checked on every `Retriable.retriable`/
+  `with_context` call rather than only when a given context is first used. A
+  context whose options contain an unknown key (including a nested `contexts`
+  key) now raises `ArgumentError, "<key> is not a valid option"`, matching the
+  `with_override` path. Non-Hash `contexts` and non-Hash per-context values
+  remain leniently treated as empty options (no behavior change). Option
+  _values_ are still validated lazily at retry time, unchanged.
+
+### Docs
+
+- Document that `on_retry` receives `next_interval: nil` on the final rescued
+  attempt, when Retriable is about to give up because `tries` are exhausted.
+  `on_retry` still fires before `on_give_up` (unchanged behavior); the `nil`
+  contract is now called out in the `on_retry` documentation so handlers guard
+  arithmetic or logging on `next_interval`.
+
+### Performance
+
+- `Config#initialize` no longer allocates a throwaway `ExponentialBackoff` (and
+  runs its redundant `validate!`) just to read default values. Defaults now live
+  in a frozen `ExponentialBackoff::DEFAULTS` constant, removing an allocation and
+  redundant validation from the `retriable` hot path.
+  ([#149](https://github.com/kamui/retriable/pull/149))
+
+## 4.1.1
+
+### Bug fixes
+
+- `retry_if`, `on_retry`, and `on_give_up` are now validated to be callable
+  (respond to `#call`) or falsy. A non-callable truthy value raises
+  `ArgumentError` at configuration time instead of a later `NoMethodError` on a
+  retry path. ([#140](https://github.com/kamui/retriable/pull/140))
+
+### Internal
+
+- Add RBS type signatures for the public API (`Retriable.configure`, `config`,
+  `retriable`, `with_override`, `with_context`, and `Retriable::Config`) and
+  validate them in CI with `rbs validate`.
+  ([#142](https://github.com/kamui/retriable/pull/142))
+- Enforce a minimum test coverage floor and add a `bundler-audit` dependency
+  audit job to CI. ([#143](https://github.com/kamui/retriable/pull/143))
+- Remove an unused `CC_TEST_REPORTER_ID` from the CI workflow.
+  ([#141](https://github.com/kamui/retriable/pull/141))
+
+## 4.1.0
+
+### Bug fixes
+
+- A per-call or `with_context` `tries:` now clears an inherited `intervals:` from
+  global config or a context, matching the documented precedence. Previously
+  `Retriable.retriable(tries: 1)` was silently ignored when `intervals` was
+  configured, running `intervals.size + 1` times. Passing both `intervals:` and
+  `tries:` in the same call still lets `intervals:` win.
+
+## 4.0.0
+
+**This is a major release with breaking changes. Please read carefully before upgrading.**
+
+### Breaking changes
+
+- Removed `timeout:` option. The `timeout:` option has been removed from `Retriable.retriable`, `Retriable.configure`, and `Retriable.with_override`. It was a thin wrapper around Ruby's `Timeout.timeout`, which has well-documented safety issues: it interrupts execution at arbitrary lines and can corrupt internal state in libraries that are not interrupt-safe (mutexes, file handles, network sockets, allocator state). This was first raised against this gem in [#96](https://github.com/kamui/retriable/issues/96) in 2021; Retriable 3.8.0 deprecated the option, and 4.0 removes the footgun entirely. As a side effect, the historical bug where Retriable's own internal `Timeout::Error` was silently retried by default is no longer reachable, since Retriable no longer raises a timeout itself. User-raised `Timeout::Error` (for example, from a `Timeout.timeout` block you write inside the retried block) is still matched by the default `on: [StandardError]` because `Timeout::Error < RuntimeError < StandardError`. Passing `timeout:` to `Retriable.retriable` or `Retriable.with_override` now raises `ArgumentError`; setting `config.timeout` in `Retriable.configure` now raises `NoMethodError` because the configuration attribute has been removed. See the [4.0 migration section in the README](README.md#migration-from-3x-to-40) for replacement patterns.
+- Minimum Ruby version is now 3.2. Support for Ruby 2.x, 3.0, and 3.1 has been dropped in Retriable 4.0. If you need Retriable on Ruby 2.3.0-3.1.x, the 3.8.x line (`~> 3.8`) remains available.
+
+### Features
+
+- Add [`on_give_up`](README.md#callbacks) callback that runs when Retriable stops retrying after a rescued retriable exception. Receives `(exception, try, elapsed_time, next_interval, reason)`, where `reason` is `:tries_exhausted` or `:max_elapsed_time`. Does not fire for non-retriable exceptions or `retry_if` rejections. Pass `on_give_up: false` to suppress a configured handler for a single call.
+- Accept a [`Set` of `Exception` classes](README.md#configuring-which-options-to-retry-with-on) as the `on:` option, in addition to a single class, an `Array`, or a `Hash`.
+
+### Internal
+
+- Switched `Retriable.retriable`, `Retriable.with_context`, and the `Kernel` extension methods to Ruby 3.1+ anonymous block forwarding. No user-visible behavior change.
+
+## 3.8.0
+
+### Deprecations
+
+- Deprecated the `timeout:` option ahead of its removal in Retriable 4.0. Non-nil timeout values supplied through `Retriable.configure`, `Retriable.retriable(...)`, or `Retriable.with_override(...)` now emit a deprecation warning while keeping the existing runtime behavior unchanged. On Ruby 2.7+ the warning is emitted via `Kernel.warn(..., category: :deprecated)`, so callers can silence it through the standard Ruby controls (`Warning[:deprecated] = false`, `ruby -W:no-deprecated`, or a custom `Warning.warn`). To keep the notice from drowning busy applications, it is emitted at most once per process; suppression via `Warning[:deprecated]` leaves the warner armed for the next call that re-enables the category. Prefer library-native timeout settings, or wrap the retried block in `Timeout.timeout(...)` directly if you still need that behavior. See the README migration guidance for details.
+
+## 3.7.0
+
+- Feature: Opt-in unbounded retries via `tries: Float::INFINITY`. Requires a finite `max_elapsed_time` as a safety bound and is incompatible with custom `intervals:`. Both invalid configurations raise `ArgumentError` from `Config#validate!`.
+
+## 3.6.1
+
+- Fix: Validate the `on:` option before retrying. Previously, passing a non-`Exception` value such as `Object`, `Kernel`, or a plain `Module` (which appear in every `Exception`'s ancestor chain) would silently retry process-critical exceptions like `SystemExit` and `Interrupt`. The `on:` option now requires an `Exception` subclass, an array of them, or a hash whose keys are such classes and whose values are `nil`, a `Regexp`, or an array of `Regexp`s. Invalid shapes raise `ArgumentError` before the block runs.
+- Fix: Validate `with_override(contexts:)` shape before applying overrides. `contexts` may be `nil` or a hash, and each per-context override must be a hash.
+- Docs: Document that `on_retry: false` disables a callback set in `Retriable.configure` for a single call.
+
+## 3.6.0
+
+- Breaking: `Retriable.override` and `Retriable.reset_override` are removed and replaced by block-scoped `Retriable.with_override(opts) { ... }`. The new API requires a block, restores the previous override (or absence of override) when the block exits via `ensure`, and is thread-local — overrides set in one thread do not affect other threads, and child threads do not inherit them. Fibers within a thread still share the thread's active override. Nested `with_override` calls correctly restore the outer override on inner exit. See the README and `docs/testing.md` for migration and testing patterns. This replaces the override API introduced in 3.5.0.
+
+## 3.5.1
+
+- Fix: Validate retry timing and count options before use to reject invalid retry configurations. `tries` must now be a positive integer unless a custom `intervals` array is provided.
+
+## 3.5.0
+
+- Fix: Do not count skipped sleep intervals against `max_elapsed_time` when `sleep_disabled` is true.
+- Add `override` and `reset_override` APIs to force retry settings over local call options when needed (for example, test short-circuiting).
+
+## 3.4.1
+
+- Fix: Use `Process.clock_gettime(CLOCK_MONOTONIC)` for elapsed time tracking so retry timing is immune to wall-clock adjustments (NTP, manual changes).
+- Fix: Handle `max_elapsed_time: nil` gracefully instead of raising `NoMethodError`.
+- Remove dead `* 1.0` float coercion in `ExponentialBackoff#randomize`.
+
+## 3.4.0
+
+- Add `retry_if` option to support custom retry predicates, including checks against wrapped `exception.cause` values.
+
+## 3.3.0
+
+- Refactor `Retriable.retriable` internals into focused private helpers to improve readability while preserving behavior.
+- Modernize `.rubocop.yml` with explicit modern defaults to enable new cops while preserving existing project style policies.
+
+## 3.2.1
+
+- Remove executables from gemspec as it was polluting the path for some users. Thanks @hsbt.
+
+## 3.2.0
+
+- Require ruby 2.3+.
+- Fix: Ensure `tries` value is overridden by `intervals` parameter if both are provided and add a test for this. This is always what the README stated but the code didn't actually do it.
+- Fix: Some rubocop offenses.
+
+## 3.1.2
+
+- Replace `minitest` gem with `rspec`
+- Fancier README
+- Remove unnecessary short circuit in `randomize` method
+
+## 3.1.1
+
+- Fix typo in contexts exception message.
+- Fix updating the version in the library.
+
+## 3.1.0
+
+- Added [contexts feature](https://github.com/kamui/retriable#contexts). Thanks to @apurvis.
+
+## 3.0.2
+
+- Add configuration and options validation.
+
+## 3.0.1
+
+- Add `rubocop` linter to enforce coding styles for this library. Also, fix rule violations.
+- Removed `attr_reader :config` that caused a warning. @bruno-
+- Clean up Rakefile testing cruft. @bruno-
+- Use `.any?` in the `:on` hash processing. @apurvis
+
+## 3.0.0
+
+- Require ruby 2.0+.
+- Breaking Change: `on` with a `Hash` value now matches subclassed exceptions. Thanks @apurvis!
+- Remove `awesome_print` from development environment.
+
+## 2.1.0
+
+- Fix bug #17 due to confusing the initial try as a retry.
+- Switch to `Minitest` 5.6 expect syntax.
+
+## 2.0.2
+
+- Change required_ruby_version in gemspec to >= 1.9.3.
+
+## 2.0.1
+
+- Add support for ruby 1.9.3.
+
+## 2.0.0
+
+- Require ruby 2.0+.
+- Time intervals default to randomized exponential backoff instead of fixed time intervals. The delay between retries grows with every attempt and there's a randomization factor added to each attempt.
+- `base_interval`, `max_interval`, `rand_factor`, and `multiplier` are new arguments that are used to generate randomized exponential back off time intervals.
+- `interval` argument removed.
+- Accept `intervals` array argument to provide your own custom intervals.
+- Allow configurable defaults via `Retriable#configure` block.
+- Add ability for `:on` argument to accept a `Hash` where the keys are exception types and the values are a single or array of `Regexp` pattern(s) to match against exception messages for retrial.
+- Raise, not return, on max elapsed time.
+- Check for elapsed time after next interval is calculated and it goes over the max elapsed time.
+- Support early termination via `max_elapsed_time` argument.
+
+## 2.0.0.beta5
+
+- Change `:max_tries` back to `:tries`.
+
+## 2.0.0.beta4
+
+- Change #retry back to #retriable. Didn't like the idea of defining a method that is also a reserved word.
+- Add ability for `:on` argument to accept a `Hash` where the keys are exception types and the values are a single or array of `Regexp` pattern(s) to match against exception messages for retrial.
+
+## 2.0.0.beta3
+
+- Accept `intervals` array argument to provide your own custom intervals.
+- Refactor the exponential backoff code into it's own class.
+- Add specs for exponential backoff, randomization, and config.
+
+## 2.0.0.beta2
+
+- Raise, not return, on max elapsed time.
+- Check for elapsed time after next interval is calculated and it goes over the max elapsed time.
+- Add specs for `max_elapsed_time` and `max_interval`.
+
+## 2.0.0.beta1
+
+- Require ruby 2.0+.
+- Default to random exponential backoff, removes the `interval` option. Exponential backoff is configurable via arguments.
+- Allow configurable defaults via `Retriable#configure` block.
+- Change `Retriable.retriable` to `Retriable.retry`.
+- Support early termination via `max_elapsed_time` argument.
+
+## 1.4.1
+
+- Fixes non kernel mode bug. Remove DSL class, move `#retriable` into Retriable module. Thanks @mkrogemann.
+
+## 1.4.0
+
+- By default, retriable doesn't monkey patch `Kernel`. If you want this functionality,
+  you can `require 'retriable/core_ext/kernel'.
+- Upgrade minitest to 5.x.
+- Refactor the DSL into it's own class.
+
+## 1.3.3.1
+
+- Allow sleep parameter to be a proc/lambda to allow for exponential backoff.
+
+## 1.3.3
+
+- sleep after executing the retry block, so there's no wait on the first call (molfar)
+
+## 1.3.2
+
+- Clean up option defaults.
+- By default, rescue StandardError and Timeout::Error instead of [Exception](http://www.mikeperham.com/2012/03/03/the-perils-of-rescue-exception).
+
+## 1.3.1
+
+- Add `rake` dependency for travis-ci.
+- Update gemspec summary and description.
+
+## 1.3.0
+
+- Rewrote a lot of the code with inspiration from [attempt](https://rubygems.org/gems/attempt).
+- Add timeout option to the code block.
+- Include in Kernel by default, but allow require 'retriable/no_kernel' to load a non kernel version.
+- Renamed `:times` option to `:tries`.
+- Renamed `:sleep` option to `:interval`.
+- Renamed `:then` option to `:on_retry`.
+- Removed other callbacks, you can wrap retriable in a begin/rescue/else/ensure block if you need that functionality. It avoids the need to define multiple Procs and makes the code more readable.
+- Rewrote most of the README
+
+## 1.2.0
+
+- Forked the retryable-rb repo.
+- Extend the Kernel module with the retriable method so you can use it anywhere without having to include it in every class.
+- Update gemspec, Gemfile, and Raketask.
+- Remove echoe dependency.
