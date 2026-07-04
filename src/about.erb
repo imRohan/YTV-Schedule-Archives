@@ -1,0 +1,29 @@
+---
+layout: default
+metadata: site.data.schedule_metadata
+---
+<about class="page--default">
+  <h1>YTV25</h1>
+  <h2>Updated: <%= metadata.updated_at %></h2>
+
+  <div class="content_container">
+    <h3>What</h3>
+    <p>
+      YTV25 simulates a live television broadcast of the iconic Canadian youth network, YTV, synchronized exactly 25 years ago to the calendar day.
+    </p>
+    <p>
+      The goal is to provide a pure, un-curated nostalgia experience. Users don't pick a show from an on-demand menu; they tune in to a streaming linear broadcast that perfectly mimics what was on the air at that precise moment a quarter-century ago, complete with block programming (e.g., The Zone, Bionix), original retro commercials, and nostalgic station IDs
+    </p>
+    <p>
+      When a user lands on the site, a video player immediately begins streaming the program scheduled for that exact day and time 25 years ago. If it's 4:30 PM, they are dropping right into the middle of ReBoot or Pokémon hosted by Sugar, Carlos, or Phil.
+    </p>
+
+    <h3>How</h3>
+    <p>
+      Schedule data is constantly being pulled from the <a href="https://ytv-schedule-archives.fandom.com/wiki/YTV_Schedule_Archives_Wiki" target="_blank">YTV Schedule Archive wiki</a>. The schedules are parsed, and stored as CSV files in the <a href="https://github.com/imRohan/YTV-Schedule-Archives" target="_blank">GitHub Repo</a>.
+    </p>
+    <p>
+      The YTV programming schedule for the calendar date (25 years ago) is fetched and processed dailt. Youtube is then used to find content for each scheduled time slot based on the Show & Episode name.
+    </p>
+  </div>
+</about>

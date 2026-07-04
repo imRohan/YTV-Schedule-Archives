@@ -148,7 +148,7 @@ class PlayerComponent {
     const titleContainer = document.getElementById('now-playing__title')
     const subTitleContainer = document.getElementById('now-playing__subtitle')
     const timeContainer = document.getElementById('time__container')
-    document.title = `YTV Archive Channel | ${show}`
+    document.title = `YTV25 | ${show}`
     titleContainer.innerHTML = show
     subTitleContainer.innerHTML = episode
     timeContainer.innerHTML = time
