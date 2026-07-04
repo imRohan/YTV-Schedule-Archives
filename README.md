@@ -5,7 +5,7 @@
 
 A historical and ongoing archive of television broadcasting schedules for the Canadian cable channel **YTV**, stored in clean, machine-readable `.csv` formats. Data was scraped from the [YTV Wiki](https://ytv-schedule-archives.fandom.com/wiki/YTV_Schedule_Archives_Wiki) and will be updated periodically.
 
-This project also includes the project files necessary to host the [YTVArchive Channel](https://ytvarchive.com/) which plays scheduled content 24/7. 
+This project also includes the project files necessary to host [YTV25](https://ytvarchive.com/) which simulates a live television broadcast of the iconic Canadian youth network, synchronized exactly 25 years ago to the calendar day. 
 
 This repository serves as a data resource for media researchers, television historians, and nostalgia enthusiasts tracking broadcasting trends, programming blocks (like *The Zone*, *The Fresh Prince of Bel-Air*, or *SpongeBob SquarePants*), and regional scheduling shifts over the years.
 
