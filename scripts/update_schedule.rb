@@ -7,13 +7,11 @@ require 'csv'
 require 'pry'
 
 class ScheduleUpdater
-  attr_accessor :date, :client, :year, :quota_reached
+  attr_accessor :years_ago, :client, :quota_reached
 
-  def initialize(date:, client: Google::Apis::YoutubeV3::YouTubeService.new,
-                 year: 2001)
-    @date = date
+  def initialize(years_ago:, client: Google::Apis::YoutubeV3::YouTubeService.new)
+    @years_ago = years_ago
     @client = client
-    @year = year
     @quota_reached = false
   end
 
@@ -27,8 +25,10 @@ class ScheduleUpdater
   end
 
   def schedule_date
-    @schedule_date ||= Date
-                       .parse("#{date.strftime('%B')} #{date.day}, #{year}")
+    today = Date.today
+    @schedule_date ||= Date.parse(
+      "#{today.strftime('%B')} #{today.day}, #{today.year - years_ago}"
+    )
   end
 
   def process_schedule
@@ -123,5 +123,5 @@ class ScheduleUpdater
   end
 end
 
-updater = ScheduleUpdater.new(date: Date.today)
+updater = ScheduleUpdater.new(years_ago: 25)
 updater.call
