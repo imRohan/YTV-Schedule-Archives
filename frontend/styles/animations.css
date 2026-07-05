@@ -32,3 +32,8 @@
     text-shadow: -1px 1px 8px rgba(255, 255, 255, 0.6), 1px -1px 8px rgba(255, 255, 235, 0.7), 5px 0 1px rgba(251, 0, 231, 0.8), 0 -5px 1px rgba(0, 233, 235, 0.8), -5px 0 1px rgba(0, 242, 14, 0.8), 0 5px 1px rgba(244, 45, 0, 0.8), -5px 0 1px rgba(59, 0, 226, 0.8);
   }
 }
+
+@keyframes roll-out-blurred-top {
+  0% { transform: translateY(0) rotate(0deg); filter: blur(0); opacity: 1; }
+  100% { transform: translateY(-800px) rotate(-720deg); filter: blur(3px); opacity: 0;}
+}
