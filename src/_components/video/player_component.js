@@ -7,17 +7,6 @@ class PlayerComponent {
     this.currentVideoID = null
   }
 
-  currentTime() {
-    const currentTime = new Date()
-    const currentMinutes = currentTime.getMinutes()
-    if(currentMinutes < 30) {
-      currentTime.setMinutes(0,0,0)
-    } else {
-      currentTime.setMinutes(30,0,0)
-    }
-    return currentTime
-  }
-
   timeFormatted(time) {
     const currentHour = time.
       toLocaleString('en-US', { hour: 'numeric', hour12: true,
@@ -28,13 +17,6 @@ class PlayerComponent {
   currentShow() {
     const currentTime = this.timeFormatted(new Date())
     return this.getContentForTime(currentTime)
-  }
-
-  nextShow() {
-    const currentTime = this.currentTime()
-    currentTime.setMinutes(currentTime.getMinutes() + 30, 0, 0)
-    const time = this.timeFormatted(currentTime)
-    return this.schedule[time]
   }
 
   getContentForTime(targetTime) {
@@ -62,17 +44,23 @@ class PlayerComponent {
   }
 
   playInitialVideo() {
-    const rand = Math.random()
-    if (rand < 0.9) {
-      const { videoID } = this.currentShow()
-      this.currentVideoID = videoID
-      const startTimeSec = this.randomNumberBetween(30, 240)
-      this.attachIframe(videoID, startTimeSec)
-    } else {
-      const randomVideoId = this.getRandomInterstitialVideoId()
-      const startTimeSec = this.randomNumberBetween(2, 30)
-      this.attachIframe(randomVideoId, startTimeSec)
-    }
+    const { time, videoID } = this.currentShow()
+    const elapsedSeconds = this.getElapsedTimeSeconds(time)
+    this.attachIframe(videoID, elapsedSeconds)
+    this.currentVideoID = videoID
+  }
+
+  getElapsedTimeSeconds(scheduleTime) {
+    const currentTime = new Date()
+    const currentMinutes = currentTime.getMinutes()
+    const currentTimeSlot = this.convertScheduleTime(scheduleTime)
+    const currentTimeSlotStartMin = currentTimeSlot.getMinutes()
+    return (currentMinutes - currentTimeSlotStartMin) * 60
+  }
+
+  convertScheduleTime(scheduleTimeString) {
+    const timeFormatted = scheduleTimeString.replace('am', ' am').replace('pm', ' pm')
+    return new Date(`01/01/2011 ${timeFormatted}`)
   }
 
   attachIframe(videoID, start) {

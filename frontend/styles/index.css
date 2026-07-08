@@ -5,12 +5,13 @@
   --nav-background: #FFFFFF;
   --nav-font-size: 2rem;
   --nav-color: #FFFFFF;
-  --ui-opacity: 0.7;
   --ytv-brand-color: #d300ff;
   --font-size--large: 4rem;
   --font-size: 3rem;
   --font-size--small: 2rem;
   --color-transparent-white: rgba(255,255,255,var(--ui-opacity));
+  --ui-opacity: 0.7;
+  --ui-bottom: 2rem;
 }
 
 *:not(dialog) {
@@ -122,7 +123,12 @@ td {
 }
 
 a {
+  will-change: text-shadow;
   color: var(--ytv-brand-color);
+}
+
+a:hover {
+  animation: rgbText 1s steps(9) 0s infinite alternate;
 }
 
 p {

@@ -2,10 +2,14 @@
   display: none;
   position: absolute;
   z-index: 0;
-  bottom: 2rem;
+  bottom: var(--ui-bottom);
   right: 3rem;
   padding: 0.25rem;
   border-radius: 2rem;
+
+  @media (max-width: 1023px) {
+    right: 1rem;
+  }
 }
 
 #reaction__container, .reactions--connected {
@@ -13,20 +17,21 @@
 }
 
 .reaction__button {
-  animation: rgbText 5s steps(9) 0s infinite alternate;
   background: none;
   border: none;
-  border-radius: 50%;
   cursor: pointer;
-  font-size: 1.3rem;
-  padding: 0.8rem;
-  line-height: 1.3rem;
+  font-size: 3rem;
+  padding-right: 0.4rem;
+  line-height: 3rem;
   will-change: text-shadow;
 }
 
+.reaction__button:last-child {
+  padding-right: 0;
+}
+
 .reaction__button:hover {
-  border: 1px solid white;
-  background: var(--color-transparent-white);
+  animation: rgbText 1s steps(9) 0s infinite alternate;
 }
 
 .reaction {
@@ -35,6 +40,11 @@
   position: absolute;
   pointer-events: none;
   right: 5rem;
+  bottom: var(--ui-bottom);
+
+  @media (max-width: 1023px) {
+    right: 3rem;
+  }
 }
 
 .reaction, .reaction--visible {

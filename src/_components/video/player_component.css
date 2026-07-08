@@ -95,7 +95,7 @@
 
 #now-playing__container {
   position: absolute;
-  bottom: 2rem;
+  bottom: var(--ui-bottom);
   left: 3rem;
   color: var(--metadata-color);
   font-family: "Jersey 10", sans-serif;
