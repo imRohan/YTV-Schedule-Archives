@@ -1,6 +1,6 @@
 class Video::PlayerComponent < Bridgetown::Component
   def initialize(schedule:, metadata:, interstitial_content:)
-    @schedule_hash = schedule.reduce(Hash.new) do |hash, row|
+    @schedule_hash = schedule.each_with_object({}) do |row, hash|
       hash[row.Time] = { time: row.Time, show: row.Show, episode: row.Episode,
                          videoID: row["Youtube Video ID"] }
       hash

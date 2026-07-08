@@ -1,12 +1,8 @@
 class ReactionComponent {
-  constructor() {
+  constructor(reactionsMap) {
     this.wssUrl = 'wss://socket.butterchickendinner.com'
     this.webSocket = null
-    this.reactionsMap = {
-      'f30838e1-8a19-4a25-b95f-625733edee35': '👀',
-      '5de4cc03-fed0-478c-b19c-e1dc43a595c1': '🔥',
-      'bb78f0f0-874e-4e91-a323-3617153b938c': '❤️',
-    }
+    this.reactionsMap = reactionsMap
     this.connectedReaction = Object.keys(this.reactionsMap).shift()
     this.container = document.getElementById('reaction__container')
   }

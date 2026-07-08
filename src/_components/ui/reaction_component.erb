@@ -2,7 +2,7 @@
 
 <script defer>
   document.addEventListener("DOMContentLoaded", function(){
-    window.reactionComponent = new ReactionComponent()
+    window.reactionComponent = new ReactionComponent(<%= raw(@reactions_map.to_json) %>)
     reactionComponent.connect()
   })
 </script>
