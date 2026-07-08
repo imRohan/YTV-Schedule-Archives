@@ -43,11 +43,11 @@ class PlayerComponent {
       return Date.parse('01/01/2011 '+ scheduleTimeFixed) <= Date.parse('01/01/2011 ' + targetTime)
     })
     const content = this.schedule[pastTimes[pastTimes.length - 1]]
-    const { show, videoID } = content
+    const { time, show, videoID } = content
     if(show && videoID) {
       return content
     } else {
-      return { show: "No Content", episode: "Sorry folks!", videoID: "7xmtQdDQ2ik" }
+      return { time, show: "No Content", episode: "Sorry folks!", videoID: "7xmtQdDQ2ik" }
     }
   }
 
