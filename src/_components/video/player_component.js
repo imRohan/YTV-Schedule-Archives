@@ -63,7 +63,7 @@ class PlayerComponent {
 
   playInitialVideo() {
     const rand = Math.random()
-    if (rand < 0.6) {
+    if (rand < 0.9) {
       const { videoID } = this.currentShow()
       this.currentVideoID = videoID
       const startTimeSec = this.randomNumberBetween(30, 240)

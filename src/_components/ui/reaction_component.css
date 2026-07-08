@@ -1,0 +1,42 @@
+#reaction__container {
+  display: none;
+  position: absolute;
+  z-index: 0;
+  bottom: 2rem;
+  right: 3rem;
+  padding: 0.25rem;
+  border-radius: 2rem;
+}
+
+#reaction__container, .reactions--connected {
+  display: flex;
+}
+
+.reaction__button {
+  animation: rgbText 5s steps(9) 0s infinite alternate;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.3rem;
+  padding: 0.8rem;
+  line-height: 1.3rem;
+  will-change: text-shadow;
+}
+
+.reaction__button:hover {
+  border: 1px solid white;
+  background: var(--color-transparent-white);
+}
+
+.reaction {
+  display: block;
+  font-size: 3rem;
+  position: absolute;
+  pointer-events: none;
+  right: 5rem;
+}
+
+.reaction, .reaction--visible {
+  animation: roll-out-blurred-top 2s ease-in 0s 1 normal both;
+}
