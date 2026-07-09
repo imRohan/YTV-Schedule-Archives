@@ -1,14 +1,16 @@
 #reaction__container {
   display: none;
-  position: absolute;
+  position: fixed;
   z-index: 0;
   bottom: var(--ui-bottom);
   right: 3rem;
   padding: 0.25rem;
   border-radius: 2rem;
+  touch-action: manipulation;
 
   @media (max-width: 1023px) {
     right: 1rem;
+    bottom: 0rem;
   }
 }
 
