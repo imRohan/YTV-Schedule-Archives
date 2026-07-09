@@ -70,6 +70,7 @@ class PlayerComponent {
       videoId: videoID,
       events: {
         'onStateChange': this.onPlayerStateChange,
+        'onError': this.onPlayerError,
       },
       playerVars: {
         start,
@@ -94,6 +95,10 @@ class PlayerComponent {
         break;
     }
 
+  }
+
+  onPlayerError(_event) {
+    window.player.playInterstitialVideo()
   }
 
   handlePausedState(event) {
