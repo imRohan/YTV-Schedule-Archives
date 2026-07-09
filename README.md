@@ -2,6 +2,8 @@
 
 
 # YTV Television Scheduling Archive & Live Channel
+[![Deploy to GitHub pages](https://github.com/imRohan/YTV-Schedule-Archives/actions/workflows/gh-pages.yml/badge.svg)](https://github.com/imRohan/YTV-Schedule-Archives/actions/workflows/gh-pages.yml)
+[![Update Channel Schedule](https://github.com/imRohan/YTV-Schedule-Archives/actions/workflows/update_channel_cron.yml/badge.svg)](https://github.com/imRohan/YTV-Schedule-Archives/actions/workflows/update_channel_cron.yml)
 
 A historical and ongoing archive of television broadcasting schedules for the Canadian cable channel **YTV**, stored in clean, machine-readable `.csv` formats. Data was scraped from the [YTV Wiki](https://ytv-schedule-archives.fandom.com/wiki/YTV_Schedule_Archives_Wiki) and will be updated periodically.
 
@@ -12,6 +14,11 @@ This repository serves as a data resource for media researchers, television hist
 ### Note on Timezones
 
 YTV historically broadcast multiple feeds across Canada (primarily Eastern and Pacific). Unless explicitly flagged in a separate regional sub-folder, all times in the primary datasets are normalized to Eastern Time (ET).
+
+### How this Works
+A daily GitHub Action reads the YTV programming schedule from exactly 25 years ago and fetches the corresponding videos from YouTube. Once the video IDs are retrieved and the schedule is updated, a new build is automatically triggered to deploy the updated YTV25 website.
+
+To back this, a weekly GitHub Action retrieves upcoming YTV programming schedules to keep the repository up to date. This automation allows the YTV25 channel to run indefinitely, or for 25 years after YTV ceases to air.
 
 ## License
 
