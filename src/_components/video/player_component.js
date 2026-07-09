@@ -34,6 +34,7 @@ class PlayerComponent {
   }
 
   loadPlayer() {
+    this.loadChannelNumber()
     this.playInitialVideo()
     this.loadNowPlayingData()
     this.initClickEvents()
@@ -152,6 +153,42 @@ class PlayerComponent {
     reportButton.addEventListener('click', (event) => {
       this.reportContent()
     })
+
+    const contextContainer = document.getElementById('context__container')
+    contextContainer.addEventListener('click', (event) => {
+      const newChannelNumber = window.prompt('Enter New Channel Number', 25)
+      this.saveChannelNumber(newChannelNumber)
+    })
+  }
+
+  loadChannelNumber() {
+    const number = this.getCookie('channelNumber')
+    this.updateChannelNumber(number)
+  }
+
+  saveChannelNumber(number) {
+    if (number && !isNaN(number)) {
+      this.setCookie('channelNumber', number)
+      this.updateChannelNumber(number)
+    }
+  }
+
+  updateChannelNumber(number) {
+    if (number && !isNaN(number)) {
+      const channelNumber = document.getElementById('context__channel-number')
+      channelNumber.innerHTML = number
+    }
+  }
+
+  setCookie(key, value) {
+    document.cookie = `${key}=${value};path=/`
+  }
+
+  getCookie(key) {
+    return document.cookie.split('; ').reduce((r, v) => {
+      const parts = v.split('=')
+      return parts[0] === key ? decodeURIComponent(parts[1]) : r
+    }, '')
   }
 
   reportContent() {

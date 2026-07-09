@@ -1,7 +1,7 @@
 #reaction__container {
   display: none;
   position: fixed;
-  z-index: 0;
+  z-index: 1;
   bottom: var(--ui-bottom);
   right: 3rem;
   padding: 0.25rem;
