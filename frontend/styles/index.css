@@ -26,16 +26,12 @@ body {
 
 main {
   overflow: hidden;
-
-  @media (orientation: portrait) {
-    display: none;
-  }
 }
 
 mobile-notice {
   align-items: center;
   animation: rgbText 5s steps(9) 0s infinite alternate;
-  background: var(--color-black);
+  backdrop-filter: blur(70px);
   color: var(--color-white);
   display: none;
   flex-direction: column;
@@ -45,6 +41,10 @@ mobile-notice {
   justify-content: center;
   text-align: center;
   will-change: text-shadow;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  z-index: 2;
 
   @media (orientation: portrait) {
     display: flex;

@@ -4,10 +4,10 @@
     <%= render "head", metadata: site.metadata, title: data.title %>
   </head>
   <body class="<%= data.layout %> <%= data.page_class %>">
+    <%= render "mobile_notice" %>
     <%= render "navbar" %>
     <main>
       <%= yield %>
     </main>
-    <%= render "mobile_notice" %>
   </body>
 </html>
