@@ -2,7 +2,7 @@ name: Fetch New Schedules
 
 on:
   schedule:
-    - cron: '0 6 * * 5'
+    - cron: '0 6 */3 * *'
       timezone: 'America/New_York'
 
 jobs:
