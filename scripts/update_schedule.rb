@@ -7,17 +7,19 @@ require 'csv'
 require 'pry'
 
 class ScheduleUpdater
-  attr_accessor :years_ago, :client, :quota_reached
+  attr_accessor :years_ago, :client, :quota_reached, :errors
 
   def initialize(years_ago:, client: Google::Apis::YoutubeV3::YouTubeService.new)
     @years_ago = years_ago
     @client = client
     @quota_reached = false
+    @errors = []
   end
 
   def call
     configure_client
     process_schedule
+    puts errors
   end
 
   def configure_client
@@ -68,6 +70,7 @@ class ScheduleUpdater
       query_youtube!(show: show, episode: episode)
     end
   rescue => error
+    errors << error.to_s
     @quota_reached = true
     nil
   end
@@ -103,7 +106,6 @@ class ScheduleUpdater
   end
 
   def update_frontend_schedule(rows:, date:)
-    return if quota_reached
     save_frontend_schedule(rows: rows)
     save_frontend_schedule_metadata(date: date)
   end
