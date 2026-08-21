@@ -1,0 +1,57 @@
+#settings__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 15rem;
+  height: 5rem;
+  position: fixed;
+  left: 50%;
+  z-index: 2;
+  margin: 0 auto;
+  bottom: -5rem;
+  transform: translate(-50%, 0);
+  padding-top: 11vh;
+  padding-bottom: 1vh;
+
+  @media (orientation: portrait) {
+    display: none;
+  }
+}
+
+.ui--disabled #settings__container {
+  display: none;
+}
+
+#settings__container:hover {
+  bottom: 0;
+}
+
+.settings__tab {
+  display: block;
+  position: absolute;
+  text-align: center;
+  margin-top: -7rem;
+  color: var(--color-white);
+  width: 100%;
+  pointer-events: none;
+  font-family: "Jersey 10", sans-serif;
+  font-size: var(--font-size-xs);
+}
+
+#settings__container:hover .settings__tab {
+  display: none;
+}
+
+#settings__container > button {
+  background: rgba(255,255,255,0.8);
+  border: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  border-radius: 1rem;
+  padding: 0.3rem;
+  font-family: "Jersey 10", sans-serif;
+  font-size: var(--font-size-xs);
+}
+
+#settings__container > button:hover {
+}

@@ -67,6 +67,10 @@ nav {
   }
 }
 
+.ui--disabled nav {
+  display: none;
+}
+
 nav > ul {
   display: flex;
   list-style-type: none;
@@ -99,6 +103,10 @@ nav > ul> li > a {
     right: 1rem;
     bottom: 2rem;
   }
+}
+
+.ui--disabled #logo {
+  bottom: var(--ui-bottom);
 }
 
 #logo > img {

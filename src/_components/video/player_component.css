@@ -26,6 +26,10 @@
   }
 }
 
+.animations--disabled #scanlines {
+  display: none;
+}
+
 #video__container {
   position: relative;
   padding-bottom: 56.25%;
@@ -61,6 +65,14 @@
   }
 }
 
+.animations--disabled #video__notice {
+  animation: none;
+}
+
+.ui--disabled #video__notice {
+  display: none;
+}
+
 #context__container {
   animation: rgbText 30s steps(9) 0s infinite alternate;
   color: var(--color-white);
@@ -80,6 +92,14 @@
   }
 }
 
+.animations--disabled #context__container {
+  animation: none;
+}
+
+.ui--disabled #context__container {
+  display: none;
+}
+
 #now-playing__container {
   position: fixed;
   bottom: var(--ui-bottom);
@@ -97,6 +117,14 @@
     left: 1rem;
     bottom: 0rem;
   }
+}
+
+.animations--disabled #now-playing__container {
+  animation: none;
+}
+
+.ui--disabled #now-playing__container {
+  display: none;
 }
 
 #now-playing__super {
@@ -126,4 +154,8 @@
   cursor: pointer;
   will-change: text-shadow;
   animation: rgbText 20s steps(9) 0s infinite alternate;
+}
+
+.animations--disabled #report-content {
+  animation: none;
 }

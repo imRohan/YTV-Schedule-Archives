@@ -1,0 +1,17 @@
+<settings-component id="settings__container">
+  <div class="settings__tab">Settings</div>
+  <button id="settings-animations" class="settings__button">
+    Toggle Scanlines
+  </button>
+
+  <button id="settings-ui" class="settings__button">
+    Toggle UI
+  </button>
+</settings-component>
+
+<script defer>
+  document.addEventListener("DOMContentLoaded", function(){
+    window.settingsComponent = new SettingsComponent()
+    settingsComponent.init()
+  })
+</script>
