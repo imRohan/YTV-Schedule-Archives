@@ -1,12 +1,19 @@
 <settings-component id="settings__container">
-  <div class="settings__tab">Settings</div>
-  <button id="settings-animations" class="settings__button">
-    Toggle Scanlines
-  </button>
+  <div class="settings__tab">
+    <span class="settings__tab-text">SETTINGS</span>
+  </div>
+  <div class="settings__panel">
+    <div class="settings__header">CONTROL PANEL</div>
+    <div class="settings__actions">
+      <button id="settings-animations" class="settings__button">
+        <span class="settings__button-label">Toggle Scanlines</span>
+      </button>
 
-  <button id="settings-ui" class="settings__button">
-    Toggle UI
-  </button>
+      <button id="settings-ui" class="settings__button">
+        <span class="settings__button-label">Toggle UI</span>
+      </button>
+    </div>
+  </div>
 </settings-component>
 
 <script defer>

@@ -1,17 +1,17 @@
 #settings__container {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  width: 15rem;
-  height: 5rem;
+  justify-content: flex-end;
   position: fixed;
   left: 50%;
-  z-index: 2;
-  margin: 0 auto;
-  bottom: -5rem;
-  transform: translate(-50%, 0);
-  padding-top: 11vh;
-  padding-bottom: 1vh;
+  bottom: -8rem;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 28rem;
+  max-width: 90vw;
+  transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: auto;
 
   @media (orientation: portrait) {
     display: none;
@@ -27,31 +27,88 @@
 }
 
 .settings__tab {
-  display: block;
-  position: absolute;
-  text-align: center;
-  margin-top: -7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-bottom: none;
+  border-radius: 1rem 1rem 0 0;
+  padding: 0.4rem 1.5rem;
   color: var(--color-white);
-  width: 100%;
-  pointer-events: none;
   font-family: "Jersey 10", sans-serif;
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size--xsmall);
+  letter-spacing: 0.1rem;
+  cursor: pointer;
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
 }
 
 #settings__container:hover .settings__tab {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
 }
 
-#settings__container > button {
-  background: rgba(255,255,255,0.8);
-  border: none;
+.settings__panel {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem 1rem 0 0;
+  padding: 1rem 1.5rem 1.25rem 1.5rem;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.settings__header {
+  font-family: "Jersey 10", sans-serif;
+  font-size: var(--font-size--xsmall);
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  letter-spacing: 0.15rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+  padding-bottom: 0.25rem;
+}
+
+.settings__actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+#settings__container > .settings__panel > .settings__actions > button.settings__button {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
   touch-action: manipulation;
-  border-radius: 1rem;
-  padding: 0.3rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
   font-family: "Jersey 10", sans-serif;
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size--small);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  will-change: transform, background, border-color, box-shadow;
+
+  &:hover {
+    background: rgba(211, 0, 255, 0.2);
+    border-color: var(--ytv-brand-color);
+    box-shadow: 0 0 15px rgba(211, 0, 255, 0.4);
+    transform: translateY(-2px);
+    animation: rgbText 2s steps(9) 0s infinite alternate;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 }
 
-#settings__container > button:hover {
+.settings__button-label {
+  line-height: 1;
 }
