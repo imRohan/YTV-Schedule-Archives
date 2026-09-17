@@ -2,31 +2,52 @@
 layout: default
 metadata: site.data.schedule_metadata
 ---
-<schedule class="page--default">
+<schedule class="page--default schedule-page">
   <h1>Today's Schedule</h1>
-  <h2><%= metadata.date %></h2>
-  <h2>Updated At: <%= metadata.updated_at %></h2>
-  <table>
-    <thead>
-      <th>Time</th>
-      <th>Show</th>
-      <th>Episode</th>
-      <th>Youtube Video ID</th>
-    </thead>
-    <tbody>
-      <% site.data.schedule.each do |row| %>
+  <div class="schedule-header">
+    <div class="schedule-meta-card">
+      <div class="meta-item">
+        <span class="meta-label">Broadcast Date:</span>
+        <span class="meta-value"><%= metadata.date %></span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Last Updated:</span>
+        <span class="meta-value"><%= metadata.updated_at %></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="schedule-table-wrapper">
+    <table class="schedule-table">
+      <thead>
         <tr>
-          <td><%= row.Time %></td>
-          <td><%= row.Show %></td>
-          <td><%= row.Episode %></td>
-          <td>
-            <a href="https://www.youtube.com/watch?v=<%= row["Youtube Video ID"] %>"
-               target="_blank">
-              <%= row["Youtube Video ID"] %>
-            </a>
-          </td>
+          <th>Time</th>
+          <th>Show</th>
+          <th>Episode</th>
+          <th>Stream</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% site.data.schedule.each do |row| %>
+          <tr>
+            <td class="col-time"><%= row.Time %></td>
+            <td class="col-show"><%= row.Show %></td>
+            <td class="col-episode"><%= row.Episode.to_s.empty? ? "—" : row.Episode %></td>
+            <td class="col-action">
+              <% if row["Youtube Video ID"].to_s.strip.empty? %>
+                <span class="no-stream">Unavailable</span>
+              <% else %>
+                <a href="https://www.youtube.com/watch?v=<%= row["Youtube Video ID"] %>"
+                   target="_blank"
+                   class="watch-btn"
+                   title="Watch on YouTube">
+                  <span class="play-icon">▶</span> Watch
+                </a>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </schedule>

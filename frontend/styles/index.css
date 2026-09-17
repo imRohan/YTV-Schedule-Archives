@@ -181,3 +181,261 @@ p {
     font-size: var(--font-size--xsmall);
   }
 }
+
+/* Schedule Page UI Enhancements */
+.schedule-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+
+  @media (max-width: 1023px) {
+    padding: 3rem 1rem;
+  }
+}
+
+.schedule-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.schedule-meta-card {
+  display: flex;
+  gap: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    align-items: center;
+  }
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: "Jersey 10", sans-serif;
+  font-size: var(--font-size--small);
+  color: var(--color-white);
+
+  @media (max-width: 1023px) {
+    font-size: var(--font-size--xsmall);
+  }
+}
+
+.meta-label {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.meta-value {
+  color: var(--ytv-brand-color);
+}
+
+.schedule-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: rgba(10, 10, 10, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(15px);
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0 !important;
+  font-family: "Jersey 10", sans-serif;
+  text-align: left;
+  font-size: var(--font-size--small);
+
+  @media (max-width: 1023px) {
+    font-size: var(--font-size--xsmall);
+  }
+}
+
+.schedule-table th {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-white);
+  padding: 1rem 1.25rem;
+  font-weight: normal;
+  letter-spacing: 0.1rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  text-align: left;
+}
+
+.schedule-table td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.schedule-table tbody tr {
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(211, 0, 255, 0.12);
+    color: var(--color-white);
+  }
+
+  &:last-child td {
+    border-bottom: none;
+  }
+}
+
+.col-time {
+  white-space: nowrap;
+  font-weight: bold;
+  color: var(--ytv-brand-color);
+  width: 15%;
+}
+
+.col-show {
+  font-weight: bold;
+  color: var(--color-white);
+  width: 35%;
+}
+
+.col-episode {
+  color: rgba(255, 255, 255, 0.7);
+  width: 35%;
+}
+
+.col-action {
+  width: 15%;
+  text-align: center;
+}
+
+.watch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(211, 0, 255, 0.2);
+  border: 1px solid var(--ytv-brand-color);
+  color: var(--color-white);
+  padding: 0.3rem 0.8rem;
+  border-radius: 0.4rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  will-change: transform, background, box-shadow;
+
+  &:hover {
+    background: var(--ytv-brand-color);
+    box-shadow: 0 0 12px var(--ytv-brand-color);
+    transform: translateY(-1px);
+    animation: none;
+  }
+}
+
+.no-stream {
+  color: rgba(255, 255, 255, 0.3);
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+/* About Page UI Enhancements */
+.about-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+
+  @media (max-width: 1023px) {
+    padding: 3rem 1rem;
+  }
+}
+
+.about-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.about-tagline {
+  font-family: "Jersey 10", sans-serif;
+  font-size: var(--font-size--small);
+
+  @media (max-width: 1023px) {
+    font-size: var(--font-size--xsmall);
+  }
+}
+
+.about-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.about-card {
+  background: rgba(10, 10, 10, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(15px);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    border-color: rgba(211, 0, 255, 0.5);
+    box-shadow: 0 8px 32px rgba(211, 0, 255, 0.2);
+  }
+
+  @media (max-width: 1023px) {
+    padding: 1.5rem;
+  }
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+  padding-bottom: 1rem;
+}
+
+.card-header > h3 {
+  font-family: "Jersey 10", sans-serif;
+  font-size: var(--font-size);
+  color: var(--color-white);
+  will-change: text-shadow;
+  animation: rgbText 10s steps(9) 0s infinite alternate;
+  margin: 0;
+
+  @media (max-width: 1023px) {
+    font-size: var(--font-size--small);
+  }
+}
+
+.card-body > p {
+  padding: 0.75rem 0;
+  font-family: "Jersey 10", sans-serif;
+  font-size: var(--font-size--small);
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.2;
+
+  @media (max-width: 1023px) {
+    font-size: var(--font-size--xsmall);
+  }
+}
+
+.card-body > p:first-child {
+  padding-top: 0;
+}
+
+.card-body > p:last-child {
+  padding-bottom: 0;
+}
+
+
