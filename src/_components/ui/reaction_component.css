@@ -1,12 +1,16 @@
 #reaction__container {
-  display: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
   position: fixed;
-  z-index: 1;
-  bottom: var(--ui-bottom);
   right: 3rem;
-  padding: 0.25rem;
-  border-radius: 2rem;
-  touch-action: manipulation;
+  bottom: -8rem;
+  z-index: 10;
+  width: 16rem;
+  max-width: 90vw;
+  transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: auto;
 
   @media (max-width: 1023px) {
     right: 1rem;
@@ -18,38 +22,102 @@
   display: none;
 }
 
-#reaction__container, .reactions--connected {
+#reaction__container:hover {
+  bottom: 0;
+}
+
+.reaction__tab {
   display: flex;
-}
-
-.reaction__button {
-  background: none;
-  border: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-bottom: none;
+  border-radius: 1rem 1rem 0 0;
+  padding: 0.4rem 1.25rem;
+  color: var(--color-white);
+  font-family: "Jersey 10", sans-serif;
+  font-size: var(--font-size--xsmall);
+  letter-spacing: 0.1rem;
   cursor: pointer;
-  font-size: 3rem;
-  padding-right: 0.4rem;
-  line-height: 3rem;
-  will-change: text-shadow;
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
 }
 
-.reaction__button:last-child {
-  padding-right: 0;
+#reaction__container:hover .reaction__tab {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
 }
 
-.reaction__button:hover {
-  animation: rgbText 1s steps(9) 0s infinite alternate;
+.reaction__panel {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem 1rem 0 0;
+  padding: 1rem 1.25rem 1.25rem 1.25rem;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.reaction__header {
+  font-family: "Jersey 10", sans-serif;
+  font-size: var(--font-size--xsmall);
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  letter-spacing: 0.15rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+  padding-bottom: 0.25rem;
+}
+
+.reaction__actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+#reaction__container > .reaction__panel > .reaction__actions > button.reaction__button {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  touch-action: manipulation;
+  border-radius: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  font-size: 1.75rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  will-change: transform, background, border-color, box-shadow;
+
+  &:hover {
+    background: rgba(211, 0, 255, 0.2);
+    border-color: var(--ytv-brand-color);
+    box-shadow: 0 0 15px rgba(211, 0, 255, 0.4);
+    transform: translateY(-2px);
+    animation: rgbText 2s steps(9) 0s infinite alternate;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 }
 
 .reaction {
   display: block;
   font-size: 3rem;
-  position: absolute;
+  position: fixed;
   pointer-events: none;
-  right: 5rem;
-  bottom: var(--ui-bottom);
+  right: 3rem;
+  bottom: 4rem;
+  z-index: 100;
 
   @media (max-width: 1023px) {
-    right: 3rem;
+    right: 2rem;
   }
 }
 
