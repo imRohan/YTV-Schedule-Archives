@@ -46,7 +46,7 @@ class ReactionComponent {
   }
 
   handleReactionClicked(element) {
-    const reactionElement = element.target
+    const reactionElement = element.currentTarget || element.target
     const { id }  = reactionElement.dataset
     window.reactionComponent.publishReaction(id)
     window.reactionComponent.displayReaction(id)
@@ -58,7 +58,7 @@ class ReactionComponent {
 
   displayReaction(id) {
     const icon = this.reactionsMap[id]
-    const element = document.createElement('reaction')
+    const element = document.createElement('div')
     element.classList.add('reaction', 'reaction--visible')
     element.innerHTML = icon
     document.body.appendChild(element)
