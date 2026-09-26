@@ -30,12 +30,13 @@ class ReactionComponent {
   }
 
   enableUI() {
+    const actionsContainer = document.getElementById('reaction__actions')
     Object.keys(this.reactionsMap).slice(1).forEach((id) => {
       const element = document.createElement('button')
       element.classList.add('reaction__button')
       element.innerHTML = this.reactionsMap[id]
       element.dataset.id = id
-      this.container.appendChild(element)
+      actionsContainer.appendChild(element)
       element.addEventListener('click', this.handleReactionClicked)
     })
     this.container.classList.add('reactions--connected')
