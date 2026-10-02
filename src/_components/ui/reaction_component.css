@@ -1,10 +1,10 @@
 #reaction__container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: end;
   justify-content: flex-end;
   position: fixed;
-  right: 3rem;
+  right: 1rem;
   bottom: -8rem;
   z-index: 10;
   width: 16rem;
@@ -29,7 +29,7 @@
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-bottom: none;
   border-radius: 1rem 1rem 0 0;
-  padding: 0.4rem 1.25rem;
+  padding: 0.4rem 1rem;
   color: var(--color-white);
   font-family: "Jersey 10", sans-serif;
   font-size: var(--font-size--xsmall);
@@ -49,7 +49,7 @@
   width: 100%;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 1rem 1rem 0 0;
-  padding: 1rem 1.25rem 1.25rem 1.25rem;
+  padding: 1rem;
   box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(15px);
   display: flex;
