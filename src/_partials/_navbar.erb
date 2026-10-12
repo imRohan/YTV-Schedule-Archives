@@ -1,19 +1,34 @@
-<nav>
-  <ul>
-    <li>
-      <a href="<%= relative_url '/' %>">
-        Watch
+<nav class="navbar">
+  <ul class="navbar-list">
+    <li class="navbar-item">
+      <a href="<%= relative_url '/' %>" class="navbar-link" data-nav="/">
+        <span>Watch</span>
       </a>
     </li>
-    <li>
-      <a href="<%= relative_url '/schedule' %>">
-        Schedule
+    <li class="navbar-item">
+      <a href="<%= relative_url '/schedule' %>" class="navbar-link" data-nav="/schedule">
+        <span>Schedule</span>
       </a>
     </li>
-    <li>
-      <a href="<%= relative_url '/about' %>">
-        About
+    <li class="navbar-item">
+      <a href="<%= relative_url '/about' %>" class="navbar-link" data-nav="/about">
+        <span>About</span>
       </a>
     </li>
   </ul>
 </nav>
+
+<script defer>
+  document.addEventListener("DOMContentLoaded", () => {
+    const currentPath = window.location.pathname.replace(/\/$/, "");
+    document.querySelectorAll('.navbar-link').forEach(link => {
+      const href = link.getAttribute('href').replace(/\/$/, "");
+      if (currentPath === href || (href !== "" && currentPath.startsWith(href + "/"))) {
+        link.classList.add('is-active');
+      } else if (href === "" && currentPath === "") {
+        link.classList.add('is-active');
+      }
+    });
+  });
+</script>
+

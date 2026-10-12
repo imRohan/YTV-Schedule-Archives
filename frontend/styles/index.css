@@ -55,40 +55,75 @@ mobile-notice > img {
   width: 80px;
 }
 
-nav {
+nav.navbar {
   position: fixed;
-  top: 1rem;
-  right: 0;
+  top: 1.5rem;
+  right: 1.5rem;
   display: block;
-  z-index: 2;
+  z-index: 10;
+  background: rgba(15, 15, 15, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+  padding: 0.35rem 0.5rem;
+  transition: all 0.3s ease;
 
   @media (orientation: portrait) {
     display: none;
   }
 }
 
-.ui--disabled nav {
+.ui--disabled nav.navbar {
   display: none;
 }
 
-nav > ul {
+.navbar-list {
   display: flex;
   list-style-type: none;
   justify-content: space-between;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0;
   padding: 0;
 }
 
-nav > ul > li {
+.navbar-item {
   display: block;
-  float: left;
 }
 
-nav > ul> li > a {
+.navbar-link {
   font-family: "Jersey 10", sans-serif;
-  padding: 0 1rem;
+  padding: 0.35rem 1rem;
   text-decoration: none;
   font-size: var(--nav-font-size);
-  color: var(--color-white);
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, background, color, box-shadow;
+
+  &:hover {
+    background: rgba(211, 0, 255, 0.2);
+    color: var(--color-white);
+    box-shadow: 0 0 15px rgba(211, 0, 255, 0.35);
+    transform: translateY(-1px);
+    animation: none;
+  }
+
+  &.is-active {
+    background: rgba(211, 0, 255, 0.3);
+    color: var(--color-white);
+    border: 1px solid var(--ytv-brand-color);
+    box-shadow: 0 0 18px rgba(211, 0, 255, 0.45);
+  }
+}
+
+.nav-icon {
+  font-size: 0.8em;
+  opacity: 0.85;
 }
 
 #logo {
