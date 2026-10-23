@@ -325,6 +325,11 @@ p {
   &:last-child td {
     border-bottom: none;
   }
+
+  &.is-current {
+    background: rgba(211, 0, 255, 0.18);
+    box-shadow: inset 3px 0 0 var(--ytv-brand-color);
+  }
 }
 
 .col-time {
