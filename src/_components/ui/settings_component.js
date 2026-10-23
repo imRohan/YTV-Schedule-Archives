@@ -18,6 +18,11 @@ class SettingsComponent {
     ui.addEventListener('click', () => {
       this.toggleUI()
     })
+
+    const uiRestore = document.getElementById('settings-ui-restore')
+    uiRestore.addEventListener('click', () => {
+      this.toggleUI()
+    })
   }
 
   toggleAnimations() {
