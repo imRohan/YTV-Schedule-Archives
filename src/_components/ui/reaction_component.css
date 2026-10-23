@@ -1,16 +1,14 @@
 #reaction__container {
+  position: fixed;
+  right: calc(var(--ui-gutter) + 72px);
+  bottom: 0;
+  transform: translateY(calc(100% - 2.4rem));
+  z-index: 10;
   display: flex;
   flex-direction: column;
-  align-items: end;
-  justify-content: flex-end;
-  position: fixed;
-  right: 1rem;
-  bottom: -8rem;
-  z-index: 10;
-  width: 16rem;
-  max-width: 90vw;
-  transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  pointer-events: auto;
+  align-items: flex-end;
+  font-family: var(--font-osd);
+  transition: transform 0.15s steps(3);
 }
 
 .ui--disabled #reaction__container {
@@ -18,102 +16,62 @@
 }
 
 #reaction__container:hover {
-  bottom: 0;
+  transform: translateY(0);
 }
 
 .reaction__tab {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  height: 2.4rem;
+  padding: 0 1.2rem;
+  font-size: var(--font-size--small);
+  line-height: 2.4rem;
+  color: var(--osd-white);
+  background: var(--guide-dark);
+  border: 2px solid var(--guide-border);
   border-bottom: none;
-  border-radius: 1rem 1rem 0 0;
-  padding: 0.4rem 1rem;
-  color: var(--color-white);
-  font-family: "Jersey 10", sans-serif;
-  font-size: var(--font-size--xsmall);
-  letter-spacing: 0.1rem;
   cursor: pointer;
-  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-}
-
-#reaction__container:hover .reaction__tab {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
 }
 
 .reaction__panel {
-  width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 1rem 1rem 0 0;
-  padding: 1rem;
-  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(15px);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  border: 2px solid var(--guide-border);
+  border-bottom: none;
+  background: var(--guide-dark);
 }
 
 .reaction__header {
-  font-family: "Jersey 10", sans-serif;
+  padding: 0 0.6rem;
   font-size: var(--font-size--xsmall);
-  color: rgba(255, 255, 255, 0.6);
-  text-align: center;
-  letter-spacing: 0.15rem;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
-  padding-bottom: 0.25rem;
+  text-transform: uppercase;
+  color: var(--osd-white);
+  background: var(--guide-accent);
 }
 
 .reaction__actions {
   display: flex;
-  gap: 0.5rem;
-  justify-content: space-between;
 }
 
 #reaction__container > .reaction__panel > .reaction__actions > button.reaction__button {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 0.9rem;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  line-height: 1;
   cursor: pointer;
   touch-action: manipulation;
-  border-radius: 0.5rem;
-  padding: 0.4rem 0.5rem;
-  font-size: 1.75rem;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  will-change: transform, background, border-color, box-shadow;
 
   &:hover {
-    background: rgba(211, 0, 255, 0.2);
-    border-color: var(--ytv-brand-color);
-    box-shadow: 0 0 15px rgba(211, 0, 255, 0.4);
-    transform: translateY(-2px);
-    animation: rgbText 2s steps(9) 0s infinite alternate;
-  }
-
-  &:active {
-    transform: translateY(0);
+    background: var(--guide-border);
   }
 }
 
 .reaction {
-  display: block;
-  font-size: 3rem;
   position: fixed;
-  pointer-events: none;
-  right: 3rem;
-  bottom: 4rem;
+  right: calc(var(--ui-gutter) + 5rem);
+  bottom: 3rem;
   z-index: 100;
-
-  @media (max-width: 1023px) {
-    right: 2rem;
-  }
+  font-size: 2.5rem;
+  pointer-events: none;
 }
 
 .reaction, .reaction--visible {

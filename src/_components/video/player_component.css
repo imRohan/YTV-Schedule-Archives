@@ -1,28 +1,20 @@
+/* Rolling bright band over the video; the static scanlines live on body::before */
 #scanlines {
-  overflow: hidden;
   position: fixed;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
+  overflow: hidden;
   pointer-events: none;
   z-index: 1;
-  opacity: .5;
-  will-change: opacity;
-  animation: opacity 3s linear infinite;
 
   &:before {
     content: '';
     position: absolute;
     left: 0;
-    top: 0;
     right: 0;
-    bottom: 0;
-    pointer-events: none;
-    background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, .5) 51%);
-    background-size: 100% 4px;
-    will-change: background, background-size;
-    animation: scanlines .2s linear infinite;
+    height: 18vh;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.045), transparent);
+    animation: roll-band 9s linear infinite;
+    will-change: transform;
   }
 }
 
@@ -43,26 +35,29 @@
   left: -30vw;
   width: 160vw;
   height: 160vh;
-  opacity: 1;
+  filter: saturate(1.15) contrast(1.05);
+  animation: crt-on 0.6s cubic-bezier(0.2, 0.8, 0.3, 1) both;
 }
 
+.animations--disabled #video__container iframe {
+  animation: none;
+}
+
+/* "MUTE" style prompt, centred like a TV volume OSD */
 #video__notice {
-  display: block;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: var(--font-size--large);
-  color: var(--color-white);
-  font-family: "Jersey 10", sans-serif;
+  padding: 0 0.6rem;
+  font-family: var(--font-osd);
+  font-size: var(--font-size);
+  text-transform: uppercase;
+  color: var(--osd-green);
+  text-shadow: var(--osd-shadow);
+  background: rgba(0, 0, 0, 0.35);
   pointer-events: none;
-  will-change: text-shadow;
-  animation: rgbText 5s steps(9) 0s infinite alternate;
-  text-align: center;
-
-  @media (max-width: 1023px) {
-    font-size: var(--font-size--small);
-  }
+  animation: blink 1.2s steps(1) infinite;
 }
 
 .animations--disabled #video__notice {
@@ -73,23 +68,22 @@
   display: none;
 }
 
+/* Channel number, top-left like a classic TV OSD */
 #context__container {
-  animation: rgbText 30s steps(9) 0s infinite alternate;
-  color: var(--color-white);
-  cursor: pointer;
-  display: block;
-  font-family: "Jersey 10", sans-serif;
-  font-size: var(--font-size--xlarge);
-  left: 3rem;
   position: fixed;
-  top: 1rem;
-  will-change: text-shadow;
-
-  @media (max-width: 1023px) {
-    left: 1rem;
-    font-size: var(--font-size--large);
-    line-height: var(--font-size--large);
-  }
+  top: calc(var(--ui-gutter) - 0.75rem);
+  left: var(--ui-gutter);
+  z-index: 2;
+  display: flex;
+  align-items: baseline;
+  gap: 0.35em;
+  font-family: var(--font-osd);
+  font-size: var(--font-size--xlarge);
+  line-height: 1;
+  color: var(--osd-green);
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.85), 0 0 10px rgba(211, 0, 255, 0.6);
+  cursor: pointer;
+  animation: rgbText 6s steps(1) infinite;
 }
 
 .animations--disabled #context__container {
@@ -100,27 +94,21 @@
   display: none;
 }
 
+/* Now-playing lower third, styled like a cable box info banner */
 #now-playing__container {
   position: fixed;
-  bottom: var(--ui-bottom);
-  left: 3rem;
-  color: var(--color-white);
-  font-family: "Jersey 10", sans-serif;
-  line-height: 0.85;
+  left: var(--ui-gutter);
+  bottom: var(--ui-gutter);
+  z-index: 2;
   display: flex;
   flex-direction: column;
-  will-change: text-shadow;
-  animation: rgbText 20s steps(9) 0s infinite alternate;
-  max-width: 60vw;
-
-  @media (max-width: 1023px) {
-    left: 1rem;
-    bottom: 0rem;
-  }
-}
-
-.animations--disabled #now-playing__container {
-  animation: none;
+  max-width: min(46rem, 62vw);
+  font-family: var(--font-osd);
+  line-height: 1.1;
+  border: 2px solid var(--guide-border);
+  background: rgba(18, 2, 31, 0.85);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.6);
+  opacity: 0.92;
 }
 
 .ui--disabled #now-playing__container {
@@ -128,34 +116,52 @@
 }
 
 #now-playing__super {
+  display: flex;
+  gap: 0.4em;
+  padding: 0 0.6rem;
   font-size: var(--font-size--xsmall);
+  text-transform: uppercase;
+  color: var(--osd-white);
+  background: var(--guide-accent);
 }
 
 #now-playing__title {
-  font-size: var(--font-size--large);
-
-  @media (max-width: 1023px) {
-    font-size: var(--font-size);
-  }
+  padding: 0.15rem 0.6rem 0;
+  font-size: var(--font-size);
+  text-transform: uppercase;
+  color: var(--osd-white);
+  text-shadow: var(--osd-shadow);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #now-playing__subtitle {
+  padding: 0 0.6rem 0.2rem;
   font-size: var(--font-size--small);
+  color: var(--guide-highlight);
+  text-shadow: var(--osd-shadow);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:empty {
+    display: none;
+  }
 }
 
 #report-content {
+  align-self: flex-start;
+  padding: 0 0.6rem 0.15rem;
   background: none;
   border: none;
-  color: var(--color-white);
-  font-family: "Jersey 10", sans-serif;
+  font-family: var(--font-osd);
   font-size: var(--font-size--xsmall);
-  text-align: left;
-  padding: 0.25rem 0;
+  text-transform: uppercase;
+  color: rgba(244, 244, 236, 0.5);
   cursor: pointer;
-  will-change: text-shadow;
-  animation: rgbText 20s steps(9) 0s infinite alternate;
-}
 
-.animations--disabled #report-content {
-  animation: none;
+  &:hover {
+    color: var(--guide-accent);
+  }
 }

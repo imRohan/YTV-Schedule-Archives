@@ -1,36 +1,42 @@
-@keyframes scanlines {
-  from {
-    background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, .5) 51%);
-    background-size: 100% 4px;
+/* Subtle phosphor flicker for the CRT overlay */
+@keyframes flicker {
+  0%, 100% { opacity: 0.92; }
+  8% { opacity: 0.85; }
+  9% { opacity: 0.95; }
+  50% { opacity: 0.9; }
+  51% { opacity: 0.82; }
+  52% { opacity: 0.93; }
+}
+
+/* Rolling bright band, like a mistuned vertical hold */
+@keyframes roll-band {
+  from { transform: translateY(-20vh); }
+  to { transform: translateY(120vh); }
+}
+
+/* CRT power-on: the picture collapses in from a bright horizontal line */
+@keyframes crt-on {
+  0% { transform: scale(1, 0.004); filter: brightness(8); opacity: 0.4; }
+  35% { transform: scale(1, 0.004); filter: brightness(8); opacity: 1; }
+  65% { transform: scale(1, 1.02); filter: brightness(2); }
+  100% { transform: scale(1, 1); filter: brightness(1); }
+}
+
+/* Chromatic aberration jitter for OSD text */
+@keyframes rgbText {
+  0%, 40%, 100% {
+    text-shadow: 1px 0 0 rgba(255, 0, 80, 0.55), -1px 0 0 rgba(0, 220, 255, 0.55), 0 0 6px currentColor;
   }
-  to {
-    background: linear-gradient(to bottom, rgba(0, 0, 0, .5) 50%, transparent 51%);
-    background-size: 100% 4px;
+  44% {
+    text-shadow: 3px 0 0 rgba(255, 0, 80, 0.7), -3px 0 0 rgba(0, 220, 255, 0.7), 0 0 6px currentColor;
+  }
+  48% {
+    text-shadow: -2px 0 0 rgba(255, 0, 80, 0.7), 2px 0 0 rgba(0, 220, 255, 0.7), 0 0 6px currentColor;
   }
 }
 
-@keyframes rgbText {
-  0% {
-    text-shadow: -1px 1px 8px rgba(255, 255, 255, 0.6), 1px -1px 8px rgba(255, 255, 235, 0.7), 0px 0 1px rgba(251, 0, 231, 0.8), 0 0px 3px rgba(0, 233, 235, 0.8), 0px 0 3px rgba(0, 242, 14, 0.8), 0 0px 3px rgba(244, 45, 0, 0.8), 0px 0 3px rgba(59, 0, 226, 0.8);
-  }
-  25% {
-    text-shadow: -1px 1px 8px rgba(255, 255, 255, 0.6), 1px -1px 8px rgba(255, 255, 235, 0.7), 0px 0 1px rgba(251, 0, 231, 0.8), 0 0px 3px rgba(0, 233, 235, 0.8), 0px 0 3px rgba(0, 242, 14, 0.8), 0 0px 3px rgba(244, 45, 0, 0.8), 0px 0 3px rgba(59, 0, 226, 0.8);
-  }
-  45% {
-    text-shadow: -1px 1px 8px rgba(255, 255, 255, 0.6), 1px -1px 8px rgba(255, 255, 235, 0.7), 5px 0 1px rgba(251, 0, 231, 0.8), 0 5px 1px rgba(0, 233, 235, 0.8), -5px 0 1px rgba(0, 242, 14, 0.8), 0 -5px 1px rgba(244, 45, 0, 0.8), 5px 0 1px rgba(59, 0, 226, 0.8);
-  }
-  50% {
-    text-shadow: -1px 1px 8px rgba(255, 255, 255, 0.6), 1px -1px 8px rgba(255, 255, 235, 0.7), -5px 0 1px rgba(251, 0, 231, 0.8), 0 -5px 1px rgba(0, 233, 235, 0.8), 5px 0 1px rgba(0, 242, 14, 0.8), 0 5px 1px rgba(244, 45, 0, 0.8), -5px 0 1px rgba(59, 0, 226, 0.8);
-  }
-  55% {
-    text-shadow: -1px 1px 8px rgba(255, 255, 255, 0.6), 1px -1px 8px rgba(255, 255, 235, 0.7), 0px 0 3px rgba(251, 0, 231, 0.8), 0 0px 3px rgba(0, 233, 235, 0.8), 0px 0 3px rgba(0, 242, 14, 0.8), 0 0px 3px rgba(244, 45, 0, 0.8), 0px 0 3px rgba(59, 0, 226, 0.8);
-  }
-  90% {
-    text-shadow: -1px 1px 8px rgba(255, 255, 255, 0.6), 1px -1px 8px rgba(255, 255, 235, 0.7), -5px 0 1px rgba(251, 0, 231, 0.8), 0 5px 1px rgba(0, 233, 235, 0.8), 5px 0 1px rgba(0, 242, 14, 0.8), 0 -5px 1px rgba(244, 45, 0, 0.8), 5px 0 1px rgba(59, 0, 226, 0.8);
-  }
-  100% {
-    text-shadow: -1px 1px 8px rgba(255, 255, 255, 0.6), 1px -1px 8px rgba(255, 255, 235, 0.7), 5px 0 1px rgba(251, 0, 231, 0.8), 0 -5px 1px rgba(0, 233, 235, 0.8), -5px 0 1px rgba(0, 242, 14, 0.8), 0 5px 1px rgba(244, 45, 0, 0.8), -5px 0 1px rgba(59, 0, 226, 0.8);
-  }
+@keyframes blink {
+  50% { opacity: 0; }
 }
 
 @keyframes roll-out-blurred-top {

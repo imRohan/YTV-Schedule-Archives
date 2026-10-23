@@ -2,49 +2,102 @@
 
 :root {
   --body-background: #000000;
-  --nav-background: #000000;
-  --nav-font-size: 2rem;
   --ytv-brand-color: #d300ff;
-  --font-size--xsmall: 1.3rem;
-  --font-size--small: 2rem;
-  --font-size: 3rem;
-  --font-size--large: 4rem;
-  --font-size--xlarge: 10rem;
-  --color-white: #FFFFFF;
-  --color-transparent-white: rgba(255,255,255,var(--ui-opacity));
-  --ui-opacity: 0.7;
-  --ui-bottom: 2rem;
+  --osd-green: #e27bff;
+  --osd-white: #f4effa;
+  --guide-bg: #200838;
+  --guide-dark: #12021f;
+  --guide-border: #4f1a80;
+  --guide-accent: #d300ff;
+  --guide-highlight: #c9a2ff;
+  --font-osd: "VT323", "Courier New", monospace;
+  --font-size--xsmall: 1.1rem;
+  --font-size--small: 1.4rem;
+  --font-size: 1.9rem;
+  --font-size--large: 2.8rem;
+  --font-size--xlarge: 4.5rem;
+  --color-white: var(--osd-white);
+  --ui-opacity: 0.75;
+  --ui-gutter: 2.25rem;
+  --osd-shadow: 2px 2px 0 rgba(0, 0, 0, 0.85);
+
+  @media (max-width: 1023px) {
+    --font-size--xlarge: 3.25rem;
+    --font-size--large: 2.1rem;
+    --font-size: 1.5rem;
+    --ui-gutter: 1rem;
+  }
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 *:not(dialog) {
   margin: 0;
 }
 
-body {
+html, body {
   background: var(--body-background);
+  color: var(--color-white);
+  font-family: var(--font-osd);
+  -webkit-font-smoothing: none;
 }
 
 main {
   overflow: hidden;
 }
 
-mobile-notice {
-  align-items: center;
-  animation: rgbText 5s steps(9) 0s infinite alternate;
-  backdrop-filter: blur(70px);
-  color: var(--color-white);
-  display: none;
-  flex-direction: column;
-  font-family: "Jersey 10", sans-serif;
-  font-size: var(--font-size);
-  height: 100vh;
-  justify-content: center;
-  text-align: center;
-  will-change: text-shadow;
+/* ---------- Global CRT overlay: scanlines, aperture grille, vignette ---------- */
+body::before,
+body::after {
+  content: '';
   position: fixed;
-  height: 100vh;
-  width: 100vw;
-  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+}
+
+body::before {
+  background:
+    repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0.28) 3px, rgba(0, 0, 0, 0) 4px),
+    repeating-linear-gradient(to right, rgba(255, 0, 0, 0.035) 0 1px, rgba(0, 255, 0, 0.035) 1px 2px, rgba(0, 0, 255, 0.035) 2px 3px);
+  animation: flicker 4s steps(1) infinite;
+}
+
+body::after {
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 58%, rgba(0, 0, 0, 0.55) 92%, rgba(0, 0, 0, 0.9) 100%);
+  box-shadow: inset 0 0 6rem rgba(0, 0, 0, 0.7);
+}
+
+.animations--disabled::before,
+.animations--disabled::after {
+  display: none;
+}
+
+/* ---------- Shared OSD text ---------- */
+.osd {
+  font-family: var(--font-osd);
+  color: var(--osd-white);
+  text-shadow: var(--osd-shadow);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+mobile-notice {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: var(--guide-dark);
+  color: var(--guide-accent);
+  font-size: var(--font-size--large);
+  text-transform: uppercase;
+  text-align: center;
 
   @media (orientation: portrait) {
     display: flex;
@@ -52,22 +105,15 @@ mobile-notice {
 }
 
 mobile-notice > img {
-  width: 80px;
+  width: 72px;
 }
 
+/* ---------- Navbar: OSD menu strip ---------- */
 nav.navbar {
   position: fixed;
-  top: 1.5rem;
-  right: 1.5rem;
-  display: block;
+  top: var(--ui-gutter);
+  right: var(--ui-gutter);
   z-index: 10;
-  background: rgba(15, 15, 15, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 9999px;
-  backdrop-filter: blur(16px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
-  padding: 0.35rem 0.5rem;
-  transition: all 0.3s ease;
 
   @media (orientation: portrait) {
     display: none;
@@ -80,402 +126,242 @@ nav.navbar {
 
 .navbar-list {
   display: flex;
-  list-style-type: none;
-  justify-content: space-between;
-  align-items: center;
+  list-style: none;
   gap: 0.25rem;
-  margin: 0;
   padding: 0;
 }
 
-.navbar-item {
-  display: block;
-}
-
 .navbar-link {
-  font-family: "Jersey 10", sans-serif;
-  padding: 0.35rem 1rem;
+  display: block;
+  padding: 0 0.6rem;
+  font-family: var(--font-osd);
+  font-size: var(--font-size--small);
+  line-height: 1.5;
+  text-transform: uppercase;
   text-decoration: none;
-  font-size: var(--nav-font-size);
-  color: rgba(255, 255, 255, 0.8);
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform, background, color, box-shadow;
+  letter-spacing: 0.06em;
+  color: var(--osd-white);
+  text-shadow: var(--osd-shadow);
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid transparent;
 
   &:hover {
-    background: rgba(211, 0, 255, 0.2);
-    color: var(--color-white);
-    box-shadow: 0 0 15px rgba(211, 0, 255, 0.35);
-    transform: translateY(-1px);
+    background: var(--guide-bg);
+    color: var(--guide-accent);
     animation: none;
   }
 
   &.is-active {
-    background: rgba(211, 0, 255, 0.3);
-    color: var(--color-white);
-    border: 1px solid var(--ytv-brand-color);
-    box-shadow: 0 0 18px rgba(211, 0, 255, 0.45);
+    background: var(--guide-bg);
+    color: var(--guide-accent);
+    border-color: var(--guide-accent);
   }
-}
-
-.nav-icon {
-  font-size: 0.8em;
-  opacity: 0.85;
 }
 
 #logo {
-  display: block;
   position: fixed;
-  z-index: 0;
-  right: 3rem;
-  bottom: 5rem;
-  opacity: var(--ui-opacity);
-
-  @media (max-width: 1023px) {
-    right: 1rem;
-    bottom: 2rem;
-  }
-}
-
-.ui--disabled #logo {
-  bottom: var(--ui-bottom);
+  z-index: 2;
+  right: var(--ui-gutter);
+  bottom: var(--ui-gutter);
+  opacity: 0.55;
+  filter: grayscale(0.2) contrast(1.1);
+  mix-blend-mode: screen;
 }
 
 #logo > img {
-  width: 80px;
+  display: block;
+  width: 56px;
 }
 
+a {
+  color: var(--guide-highlight);
+}
+
+a:hover {
+  color: var(--guide-accent);
+}
+
+/* ---------- Guide pages (Schedule / About): Prevue-style listings ---------- */
 .page--default {
   display: flex;
   flex-direction: column;
-  background: black;
-  color: #FFFFFF;
-  padding: 5rem 10rem;
   min-height: 100vh;
-}
-
-.page--default > h1, h2 {
-  font-family: "Jersey 10", sans-serif;
-  text-align: center;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4.5rem var(--ui-gutter) 2rem;
+  font-size: var(--font-size--small);
+  line-height: 1.25;
 }
 
 .page--default > h1 {
   font-size: var(--font-size--large);
-  will-change: text-shadow;
-  animation: rgbText 5s steps(9) 0s infinite alternate;
+  font-weight: normal;
+  line-height: 1;
+  color: var(--guide-accent);
+  text-transform: uppercase;
+  text-shadow: var(--osd-shadow);
+  margin-bottom: 0.5rem;
 }
 
-.page--default > h2 {
-  font-size: var(--font-size--small);
+.page--default p {
+  padding: 0.35rem 0;
 }
 
-.content_container {
-  padding: 4rem;
+.guide-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1.5rem;
+  padding: 0.15rem 0.6rem;
+  background: var(--guide-dark);
+  border: 2px solid var(--guide-border);
+  border-bottom: none;
+  color: var(--guide-highlight);
+  text-transform: uppercase;
 }
 
-.content_container > h3 {
-  font-family: "Jersey 10", sans-serif;
-  font-size: var(--font-size);
-  will-change: text-shadow;
-  animation: rgbText 5s steps(9) 0s infinite alternate;
+.guide-bar strong {
+  font-weight: normal;
+  color: var(--guide-accent);
 }
 
-table {
-  margin-top: 3rem;
-  font-family: "Jersey 10", sans-serif;
-  text-align: center;
-  font-size: var(--font-size--small);
-
-  @media (max-width: 1023px) {
-    font-size: var(--font-size--xsmall);
-  }
-}
-
-td {
-  padding: 0.5rem;
-}
-
-a {
-  will-change: text-shadow;
-  color: var(--ytv-brand-color);
-}
-
-a:hover {
-  animation: rgbText 1s steps(9) 0s infinite alternate;
-}
-
-p {
-  padding: 1rem 0;
-  font-family: "Jersey 10", sans-serif;
-  font-size: var(--font-size--small);
-
-  @media (max-width: 1023px) {
-    font-size: var(--font-size--xsmall);
-  }
-}
-
-/* Schedule Page UI Enhancements */
+/* Schedule fills exactly one screen; only the listings scroll */
 .schedule-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 4rem 2rem;
-
-  @media (max-width: 1023px) {
-    padding: 3rem 1rem;
-  }
-}
-
-.schedule-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 3rem;
-}
-
-.schedule-meta-card {
-  display: flex;
-  gap: 2rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 1rem;
-  padding: 1rem 2rem;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0.75rem;
-    width: 100%;
-    align-items: center;
-  }
-}
-
-.meta-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: "Jersey 10", sans-serif;
-  font-size: var(--font-size--small);
-  color: var(--color-white);
-
-  @media (max-width: 1023px) {
-    font-size: var(--font-size--xsmall);
-  }
-}
-
-.meta-label {
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.meta-value {
-  color: var(--ytv-brand-color);
+  height: 100vh;
+  min-height: 0;
 }
 
 .schedule-table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  background: rgba(10, 10, 10, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 1rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(15px);
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  border: 2px solid var(--guide-border);
+  background: var(--guide-bg);
 }
 
 .schedule-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 0 !important;
-  font-family: "Jersey 10", sans-serif;
   text-align: left;
   font-size: var(--font-size--small);
-
-  @media (max-width: 1023px) {
-    font-size: var(--font-size--xsmall);
-  }
 }
 
 .schedule-table th {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--color-white);
-  padding: 1rem 1.25rem;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 0.1rem 0.6rem;
   font-weight: normal;
-  letter-spacing: 0.1rem;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-  text-align: left;
+  text-transform: uppercase;
+  color: var(--guide-accent);
+  background: var(--guide-dark);
+  border-bottom: 2px solid var(--guide-border);
 }
 
 .schedule-table td {
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.9);
+  padding: 0.1rem 0.6rem;
+  border-bottom: 1px solid var(--guide-border);
+  vertical-align: top;
+  color: var(--osd-white);
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
 }
 
 .schedule-table tbody tr {
-  transition: background 0.2s ease;
-
   &:hover {
-    background: rgba(211, 0, 255, 0.12);
-    color: var(--color-white);
+    background: var(--guide-border);
+  }
+
+  &.is-current {
+    background: var(--guide-accent);
+  }
+
+  &.is-current td {
+    color: var(--osd-white);
+    text-shadow: none;
   }
 
   &:last-child td {
     border-bottom: none;
   }
-
-  &.is-current {
-    background: rgba(211, 0, 255, 0.18);
-    box-shadow: inset 3px 0 0 var(--ytv-brand-color);
-  }
 }
 
 .col-time {
+  width: 6.5rem;
   white-space: nowrap;
-  font-weight: bold;
-  color: var(--ytv-brand-color);
-  width: 15%;
+  color: var(--guide-highlight);
 }
 
 .col-show {
-  font-weight: bold;
-  color: var(--color-white);
-  width: 35%;
+  text-transform: uppercase;
 }
 
 .col-episode {
-  color: rgba(255, 255, 255, 0.7);
-  width: 35%;
+  opacity: 0.85;
 }
 
 .col-action {
-  width: 15%;
-  text-align: center;
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
 }
 
 .watch-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  background: rgba(211, 0, 255, 0.2);
-  border: 1px solid var(--ytv-brand-color);
-  color: var(--color-white);
-  padding: 0.3rem 0.8rem;
-  border-radius: 0.4rem;
+  display: inline-block;
+  padding: 0 0.4rem;
+  color: var(--guide-dark);
+  background: var(--guide-highlight);
   text-decoration: none;
-  transition: all 0.2s ease;
-  will-change: transform, background, box-shadow;
+  text-transform: uppercase;
+  text-shadow: none;
 
   &:hover {
-    background: var(--ytv-brand-color);
-    box-shadow: 0 0 12px var(--ytv-brand-color);
-    transform: translateY(-1px);
-    animation: none;
+    color: var(--guide-dark);
+    background: var(--guide-accent);
   }
+}
+
+.is-current .watch-btn {
+  background: var(--guide-dark);
+  color: var(--guide-accent);
 }
 
 .no-stream {
-  color: rgba(255, 255, 255, 0.3);
-  font-style: italic;
-  font-size: 0.9em;
+  opacity: 0.45;
+  text-transform: uppercase;
 }
 
-/* About Page UI Enhancements */
-.about-page {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 4rem 2rem;
-
-  @media (max-width: 1023px) {
-    padding: 3rem 1rem;
-  }
-}
-
-.about-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 3rem;
-  text-align: center;
-}
-
-.about-tagline {
-  font-family: "Jersey 10", sans-serif;
-  font-size: var(--font-size--small);
-
-  @media (max-width: 1023px) {
-    font-size: var(--font-size--xsmall);
-  }
+/* About page */
+.about-page > .guide-bar {
+  border-bottom: 2px solid var(--guide-border);
+  margin-bottom: 1rem;
 }
 
 .about-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+  gap: 1rem;
 }
 
 .about-card {
-  background: rgba(10, 10, 10, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(15px);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    border-color: rgba(211, 0, 255, 0.5);
-    box-shadow: 0 8px 32px rgba(211, 0, 255, 0.2);
-  }
-
-  @media (max-width: 1023px) {
-    padding: 1.5rem;
-  }
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
-  padding-bottom: 1rem;
+  border: 2px solid var(--guide-border);
+  background: var(--guide-bg);
 }
 
 .card-header > h3 {
-  font-family: "Jersey 10", sans-serif;
-  font-size: var(--font-size);
-  color: var(--color-white);
-  will-change: text-shadow;
-  animation: rgbText 10s steps(9) 0s infinite alternate;
-  margin: 0;
-
-  @media (max-width: 1023px) {
-    font-size: var(--font-size--small);
-  }
+  padding: 0.1rem 0.6rem;
+  font-size: var(--font-size--small);
+  font-weight: normal;
+  text-transform: uppercase;
+  color: var(--guide-accent);
+  background: var(--guide-dark);
+  border-bottom: 2px solid var(--guide-border);
 }
 
-.card-body > p {
-  padding: 0.75rem 0;
-  font-family: "Jersey 10", sans-serif;
-  font-size: var(--font-size--small);
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.2;
-
-  @media (max-width: 1023px) {
-    font-size: var(--font-size--xsmall);
-  }
+.card-body {
+  padding: 0.4rem 0.75rem 0.6rem;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
 }
 
 .card-body > p:first-child {
   padding-top: 0;
 }
-
-.card-body > p:last-child {
-  padding-bottom: 0;
-}
-
-

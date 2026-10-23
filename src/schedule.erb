@@ -3,18 +3,10 @@ layout: default
 metadata: site.data.schedule_metadata
 ---
 <schedule class="page--default schedule-page">
-  <h1>Today's Schedule</h1>
-  <div class="schedule-header">
-    <div class="schedule-meta-card">
-      <div class="meta-item">
-        <span class="meta-label">Broadcast Date:</span>
-        <span class="meta-value"><%= metadata.date %></span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">Last Updated:</span>
-        <span class="meta-value"><%= metadata.updated_at %></span>
-      </div>
-    </div>
+  <h1>Program Guide</h1>
+  <div class="guide-bar">
+    <span>Broadcast <strong><%= metadata.date %></strong></span>
+    <span>Updated <strong><%= metadata.updated_at %></strong></span>
   </div>
 
   <div class="schedule-table-wrapper">
@@ -24,7 +16,7 @@ metadata: site.data.schedule_metadata
           <th>Time</th>
           <th>Show</th>
           <th>Episode</th>
-          <th>Stream</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -35,14 +27,12 @@ metadata: site.data.schedule_metadata
             <td class="col-episode"><%= row.Episode.to_s.empty? ? "—" : row.Episode %></td>
             <td class="col-action">
               <% if row["Youtube Video ID"].to_s.strip.empty? %>
-                <span class="no-stream">Unavailable</span>
+                <span class="no-stream">N/A</span>
               <% else %>
                 <a href="https://www.youtube.com/watch?v=<%= row["Youtube Video ID"] %>"
                    target="_blank"
                    class="watch-btn"
-                   title="Watch on YouTube">
-                  <span class="play-icon">▶</span> Watch
-                </a>
+                   title="Watch on YouTube">▶ Watch</a>
               <% end %>
             </td>
           </tr>
